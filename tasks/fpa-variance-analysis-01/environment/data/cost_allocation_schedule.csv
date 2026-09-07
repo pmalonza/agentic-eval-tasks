@@ -1,0 +1,4 @@
+Cost_Pool_Component,Allocation_Basis,Total_Amount,Product_A_Allocated,Product_B_Allocated,Notes
+Standard Overhead Pool (Q2),Pro-rata by product revenue share,178200.00,97000.00,81200.00,Standard quarterly allocation policy per Finance Manual section 4.2
+Warehouse Consolidation Cost (one-time),Charged to Product A cost center,55000.00,55000.00,0.00,Booked to cost center 4410 (Product A Ops) per facilities invoice GL entry #33871
+Total Q2 Overhead,,233200.00,152000.00,81200.00,

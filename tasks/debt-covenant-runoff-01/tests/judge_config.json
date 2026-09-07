@@ -1,0 +1,17 @@
+{
+  "task_context": "Credit analyst task: build a 24-month term loan runoff schedule from a term sheet and a monthly cash-flow series, correctly implementing an interest-rate covenant (triggers the month AFTER a negative-cash-flow month) and a cash sweep (computed after that month's own debt service, reducing future interest). The core thing to grade is whether the agent got the SEQUENCING of these interacting rules right across all 24 months, not just whether the final numbers happen to be close.",
+  "rubric_path": "tests/rubric.json",
+  "golden_report_path": "solution/report.md",
+  "golden_answer_path": "solution/answer.json",
+  "agent_deliverables": {
+    "report": "report.md",
+    "answer": "answer.json"
+  },
+  "source_files_for_grounding": [
+    "environment/data/loan_terms.md",
+    "environment/data/monthly_cash_flow.csv"
+  ],
+  "trajectory_path": "trajectory.jsonl",
+  "judge_model_env_var": "JUDGE_MODEL",
+  "judge_model_default": "claude-sonnet-5"
+}

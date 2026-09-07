@@ -1,0 +1,20 @@
+[task]
+name = "macrs-midquarter-depreciation-01"
+domain = "finance-fpa"
+task_type = "end-to-end-analysis"
+version = "1.0.0"
+
+[labels]
+primary = ["FPA-VARIANCE"]
+secondary = ["COG", "DATA", "TSK"]
+
+[scoring]
+programmatic_weight = 0.30
+rubric_weight = 0.70
+programmatic_tolerance_note = "flat $10 absolute tolerance per dollar field, 0.5pp on the Q4 percentage field -- see tests/check_programmatic.py; the 'ignore mid-quarter entirely' bug scores 0.133, the 'mid-quarter Y1 only' bug scores 0.6"
+
+[source]
+type = "expert-designed"
+
+[eligibility]
+note = "DEPARTS from this repo's prior eligibility standard: the governing rule (IRS mid-quarter convention, the 40% Q4 threshold, and the percentage tables) is deliberately NOT stated anywhere in environment/data/. Eligibility rests on this being standard, real, IRS-codified professional knowledge (Publication 946, IRC 168(d)(3)) that any corporate tax preparer is expected to know cold -- not on everything being derivable from the provided documents. See README.md for the verification trail on the percentage tables used in the golden solution."

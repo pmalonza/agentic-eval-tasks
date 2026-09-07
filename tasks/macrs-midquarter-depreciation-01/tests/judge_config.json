@@ -1,0 +1,17 @@
+{
+  "task_context": "Corporate tax/FP&A task: compute regular MACRS depreciation for a small fixed-asset register. The core domain-knowledge gap being tested is whether the agent knows -- without being told -- that IRS rules require the mid-quarter convention instead of the default half-year convention whenever more than 40% of a year's aggregate depreciable basis is placed in service in the fourth quarter, and that each asset then uses its own placed-in-service quarter's percentage table for every year of its recovery period, not only its first year. This rule and its percentage tables are not stated anywhere in the task materials -- the agent must know or correctly derive them, the way a real corporate tax preparer would.",
+  "rubric_path": "tests/rubric.json",
+  "golden_report_path": "solution/report.md",
+  "golden_answer_path": "solution/answer.json",
+  "agent_deliverables": {
+    "report": "report.md",
+    "answer": "answer.json"
+  },
+  "source_files_for_grounding": [
+    "environment/data/asset_register.csv",
+    "environment/data/company_context.md"
+  ],
+  "trajectory_path": "trajectory.jsonl",
+  "judge_model_env_var": "JUDGE_MODEL",
+  "judge_model_default": "claude-sonnet-5"
+}

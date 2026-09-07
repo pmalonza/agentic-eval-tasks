@@ -1,0 +1,125 @@
+{
+  "task": "macrs-midquarter-depreciation-01",
+  "scale": "binary pass/fail per criterion; weighted sum normalized to [0,1]",
+  "criteria": [
+    {
+      "id": "mid-quarter-convention-correctly-identified",
+      "category": "numeric_accuracy",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report states that the mid-quarter convention applies to all five assets for 2027, not the default half-year convention."
+    },
+    {
+      "id": "q4-percentage-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report correctly computes the fourth-quarter share of total depreciable basis as 52.00% ($130,000 of $250,000)."
+    },
+    {
+      "id": "year1-totals-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report's total Year 1 (2027) depreciation figure is $38,500, not the half-year-convention figure of $50,000."
+    },
+    {
+      "id": "year2-totals-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report's total Year 2 (2028) depreciation figure is $84,600, not the half-year-convention figure of $80,000."
+    },
+    {
+      "id": "per-asset-figures-correct",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "All five assets' individual Year 1 and Year 2 depreciation figures are correct (not just the portfolio totals), including both Q4 assets (EQ-104, EQ-105) correctly showing a smaller Year 1 percentage (5.00%) than every other asset."
+    },
+    {
+      "id": "forty-percent-rule-explained",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly names and explains the greater-than-40%-of-basis-in-Q4 rule as the reason the mid-quarter convention applies, as part of its reasoning -- not just as a number that happens to be correct."
+    },
+    {
+      "id": "quarter-specific-table-persists-explained",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly explains that under the mid-quarter convention, each asset's own placed-in-service quarter governs its percentage table for every year of its recovery period, not only its first year -- and correctly applies this to Year 2 (not reverting to the half-year table for Year 2)."
+    },
+    {
+      "id": "aggregate-test-not-per-asset-explained",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report explains that the 40% test is applied in aggregate across all property placed in service during the year, so it changes the convention for the Q1-Q3 assets too (EQ-101, EQ-102, EQ-103), not only the Q4 assets that triggered it."
+    },
+    {
+      "id": "no-fabricated-elections",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT apply, or claim to apply, a Section 179 election or bonus/additional first-year depreciation to any asset -- the task states neither was elected."
+    },
+    {
+      "id": "six-year-total-reconciles",
+      "category": "sequencing_correctness",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report's six-year total depreciation figure equals the $250,000 aggregate cost basis exactly, and the report notes this as a validation check."
+    },
+    {
+      "id": "executive-summary-headline-outcomes",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The executive summary states, up front, which convention applies, the Q4 percentage that triggered it, and the Year 1 and Year 2 total depreciation figures -- not just a generic restatement of the task."
+    },
+    {
+      "id": "full-breakdown-table-present",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report includes a clearly labeled table showing each asset's placed-in-service quarter, applicable percentages, and dollar depreciation for both years."
+    },
+    {
+      "id": "no-recipe-restated",
+      "category": "communication",
+      "weight": 1,
+      "negative": true,
+      "criterion": "The report does NOT simply restate the asset register and company context verbatim in place of showing the actual computed depreciation and reasoning."
+    },
+    {
+      "id": "answer-json-schema-complete",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "answer.json includes all seven required keys (including the two nested five-asset objects) with values of the correct type."
+    },
+    {
+      "id": "assumptions-stated-where-ambiguous",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "Where the depreciation rules could require an assumption not explicitly given in the data (e.g. no other 2027 property acquisitions exist beyond the five listed, no mid-year dispositions), the report states this as an explicit assumption rather than silently assuming it."
+    },
+    {
+      "id": "no-misstated-facts",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT misstate any of the given facts (asset cost bases, placed-in-service dates, recovery period, or the no-Section-179/no-bonus-depreciation elections) relative to the source data."
+    },
+    {
+      "id": "cites-correct-legal-basis",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report names the actual governing rule (e.g. IRC Section 168(d)(3), the mid-quarter convention, or IRS Publication 946) rather than presenting the correct numbers with no indication of which rule produced them."
+    }
+  ]
+}

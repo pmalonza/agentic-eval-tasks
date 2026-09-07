@@ -1,0 +1,21 @@
+{
+  "convention_used": "mid_quarter",
+  "q4_basis_percentage_of_total": 52.0,
+  "year1_depreciation_by_asset": {
+    "EQ-101": 17500.0,
+    "EQ-102": 10000.0,
+    "EQ-103": 4500.0,
+    "EQ-104": 4500.0,
+    "EQ-105": 2000.0
+  },
+  "year2_depreciation_by_asset": {
+    "EQ-101": 13000.0,
+    "EQ-102": 12000.0,
+    "EQ-103": 10200.0,
+    "EQ-104": 34200.0,
+    "EQ-105": 15200.0
+  },
+  "total_year1_depreciation_usd": 38500.0,
+  "total_year2_depreciation_usd": 84600.0,
+  "total_six_year_depreciation_usd": 250000.0
+}

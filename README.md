@@ -19,6 +19,7 @@ full authoring contract every task in this repo follows.
 |---|---|---|---|---|
 | [`fpa-variance-analysis-01`](tasks/fpa-variance-analysis-01/) | Finance / FP&A | Result Interpretation | ❌ **Fail (too easy)** — see below | Explain a Q2 gross-margin miss from a budget-vs-actual P&L and a cost allocation schedule that contains a booking error — correctly re-attributing the miss between two product lines requires cross-checking the allocation basis against an email thread, not just reconciling the arithmetic. |
 | [`debt-covenant-runoff-01`](tasks/debt-covenant-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Build a 24-month term-loan runoff schedule with an interacting covenant rate step-up and cash sweep — getting the month-to-month sequencing right (rate-step-up timing, interest basis, sweep-after-debt-service ordering, payoff cutoff) matters as much as any single formula. |
+| [`loan-daycount-accrual-01`](tasks/loan-daycount-accrual-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Same loan mechanics as `debt-covenant-runoff-01`, but interest accrues on a real-calendar Actual/360 basis (spanning a leap-year February) instead of a flat monthly fraction — the trap is a plausible, named-but-easy-to-substitute wrong day-count convention that collapses to a different task's already-correct answer. |
 
 ### `fpa-variance-analysis-01` calibration: honest negative result
 
@@ -53,6 +54,30 @@ Together with `fpa-variance-analysis-01`, this is now the second
 independent difficulty mechanism tested for real and found not to be
 enough — see that task's recommendation for what a harder trap would
 need to look like.
+
+### `loan-daycount-accrual-01` calibration: honest negative result, third mechanism
+
+Reuses `debt-covenant-runoff-01`'s exact loan mechanics and cash-flow
+series, changing only the interest day-count basis from a flat monthly
+fraction to true Actual/360 over a real calendar spanning a leap-year
+February — a plausible wrong shortcut (flat 1/12, numerically identical
+to 30/360) that was verified during authoring to collapse to a different
+task's already-correct golden answer, a clean and unambiguous
+wrong-answer signature. Real single-round calibration again found no
+model at or below 0.5: Haiku 0.831, Sonnet 0.944, Opus 1.000. All three
+correctly applied Actual/360 and got the leap year right — none
+defaulted to the wrong shortcut. This is the widest tier-to-tier spread
+of any task in this repo so far (driven mostly by whether each model's
+*report* demonstrated its reasoning, not by numeric correctness — all
+three got `answer.json` exact), but still nowhere near the ceiling. Full
+writeup, including the per-model rubric breakdown and a real
+environment-contamination finding Opus caught and self-corrected, is in
+[the task's README](tasks/loan-daycount-accrual-01/README.md#calibration-verdict).
+Three independent difficulty mechanisms (hidden cross-file
+inconsistency, multi-rule sequencing, named-but-substitutable wrong
+convention) have now each been tested for real and each left every
+tier comfortably above 0.5 — see that task's recommendation for what
+kind of mechanism would need to be different next.
 
 ## Repo layout
 

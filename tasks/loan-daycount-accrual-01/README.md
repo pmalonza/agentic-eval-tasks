@@ -116,3 +116,95 @@ to a more familiar one it wasn't told to use.
   end-to-end, and a live `docker build` of `environment/Dockerfile` (no
   Docker runtime available in the authoring environment) — same caveats
   as the two predecessor tasks in this repo, for the same reasons.
+
+## Calibration results (real run, 2026-09-08)
+
+Ran the same real calibration process used for the two predecessor
+tasks: Haiku, Sonnet, and Opus each solved the task blind, from
+`instruction.md` + the two `environment/data/` files only, using code
+execution to run the actual simulation. Opus hit the same "subagents
+can't write a file literally named report.md" guardrail seen in prior
+rounds, correctly reported it, and returned full file content as text
+instead of working around it.
+
+**All three tiers got `answer.json` numerically exact** — none defaulted
+to the flat-1/12 or 30/360 shortcut. All three correctly derived that
+February 2028 has 29 days (a leap year) and February 2027 has 28, and
+applied Actual/360 throughout. One incidental finding: Opus discovered a
+stale pre-existing `answer.json` at its write path using the wrong
+30/360-style figures (apparently left over from shared sandbox state
+across subagent runs in this session, not something this task's
+authoring introduced) and correctly identified it as inconsistent with
+the stated day-count convention before overwriting it with the correct
+Actual/360 result — a genuinely reassuring sign of the model
+cross-checking its own output rather than trusting a suspicious existing
+file.
+
+Programmatic score was 1.0 for all three. Rubric scores, graded by hand
+criterion-by-criterion against `tests/rubric.json` (in lieu of a live
+LLM judge call, per this project's policy against spending shared
+credentials on unauthorized side calls):
+
+| Model | Programmatic | Rubric | Reward (0.30×prog + 0.70×rubric) |
+|---|---|---|---|
+| Haiku | 1.0 | 47/62 = 0.758 | **0.831** |
+| Sonnet | 1.0 | 57/62 = 0.919 | **0.944** |
+| Opus | 1.0 | 62/62 = 1.000 | **1.000** |
+
+This is the widest spread seen across all three tasks calibrated in this
+repo so far. Haiku's report never once names "Actual/360" or states any
+day-count formula despite computing it correctly under the hood, has no
+day-count column in its schedule table, has no assumptions section, and
+mischaracterizes the $100,000 cash threshold as an enforceable
+"liquidity covenant breach" requiring a "compliance" fix — `loan_terms.md`
+only ever describes that figure as the cash-sweep computation floor, not
+an independently breachable covenant with consequences. Sonnet lost
+points only on failing to state the Actual/360 formula explicitly in the
+report itself (it names the convention and shows day-counts, but never
+writes out `annual_rate/360 × days`). Opus explicitly stated the formula,
+showed a day-count column, included a totals row that reconciles
+scheduled principal + sweeps to the original principal, and — critically
+— included an assumption explicitly clarifying that the $100,000
+threshold is "a sweep threshold, not a hard funding constraint," despite
+using the looser word "covenant" once in its executive summary,
+correcting what could otherwise have been the same misstatement Haiku
+made.
+
+## Calibration verdict
+
+**FAIL (too easy).** No model scored at or below the 0.5 ceiling — even
+Haiku, the weakest tier and the one that showed real, substantive
+report-quality gaps, still scored 0.831. This is the third independent
+difficulty mechanism tested for real in this repo (after a hidden
+cross-file ratio mismatch and multi-rule sequencing/timing), and the
+third to fail to clear the ceiling.
+
+**Diagnosis.** The design bet here was specifically that a plausible,
+well-known wrong shortcut (defaulting to flat 1/12, indistinguishable in
+practice from 30/360) — fully specified as wrong in the prompt materials
+but still tempting because it's the more common and simpler convention
+— would trip up at least one tier. It didn't: all three models correctly
+read the Actual/360 instruction, correctly derived real calendar day
+counts including the leap year, and produced numerically exact answers.
+The rubric did surface the largest tier-to-tier spread of any task in
+this repo (0.831 to 1.000), driven by whether a model's *report*
+demonstrated the reasoning behind the correct numbers (explicit formula,
+day-count column, correct characterization of what the $100k figure
+actually is) rather than just landing on them — but demonstrating
+reasoning quality is a communication/rigor axis, not a correctness axis,
+and it isn't severe enough on its own to pull a score below 0.5.
+
+**Recommendation.** Three different difficulty mechanisms — hidden
+cross-file inconsistency, multi-rule sequencing, and a named-but-easy-
+to-substitute wrong convention — have now each been tested for real
+against the same three tiers and each left every tier comfortably above
+0.5, with Haiku's worst showing (0.831 here) still nearly double the
+ceiling. All three mechanisms share a common shape: a fully-specified
+rule that a model with code-execution tools can implement exactly once
+it reads the rule. The next attempt should test a mechanism that doesn't
+share that shape — either a genuine judgment call under real ambiguity
+(not a hidden-but-resolvable inconsistency), or enough additional
+interacting state (e.g. a multi-tranche payment waterfall with priority
+ordering) that a single implementation bug plausibly cascades across
+most of the schedule rather than costing a few rubric points on
+communication quality.

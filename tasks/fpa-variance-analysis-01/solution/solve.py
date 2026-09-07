@@ -63,7 +63,7 @@ def find_anomalous_allocation_row(alloc_rows: list[dict], a_share: float) -> dic
     comparison to what a pro-rata allocation would look like, not by
     matching a hardcoded row name.
     """
-    candidates = [r for r in alloc_rows if r["Allocation_Basis"].strip()]
+    candidates = [r for r in alloc_rows if "total" not in r["Cost_Pool_Component"].strip().lower()]
     anomalous = []
     for r in candidates:
         amount = _f(r, "Total_Amount")

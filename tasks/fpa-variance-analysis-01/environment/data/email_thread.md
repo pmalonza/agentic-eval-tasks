@@ -12,8 +12,7 @@ Priya,
 Wanted to give Finance a heads-up before it hits the books. We're
 consolidating the Riverside and Lakeview warehouses into the single
 Lakeview facility, effective May 20. Both sites currently store and ship
-for the whole product catalog, so this is a shared-infrastructure move,
-not tied to one line of business.
+for the whole product catalog.
 
 Rough cost estimate for the move (lease break fee on Riverside, moving
 crews, some severance for the two Riverside roles we're not relocating):
@@ -21,8 +20,7 @@ somewhere in the $50-60K range. I'll have Facilities send you the final
 number once everything's invoiced.
 
 Net of the one-time cost, this should save us about $18K/quarter in
-lease and utility costs going forward, split across everything we ship
-out of there.
+lease and utility costs going forward.
 
 - Dave
 
@@ -35,9 +33,8 @@ out of there.
 
 Dave,
 
-Thanks for the heads-up. Makes sense given both sites ship for both
-product lines. Let me know the final number when Facilities has it so I
-can get it into the Q2 close.
+Thanks for the heads-up. Let me know the final number when Facilities
+has it so I can get it into the Q2 close.
 
 Are we expecting any disruption to shipments during the transition
 week, or should volumes be roughly on plan?

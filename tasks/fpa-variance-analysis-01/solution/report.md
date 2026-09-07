@@ -52,15 +52,22 @@ Two things matter here beyond the arithmetic:
 `cost_allocation_schedule.csv` allocates the standard $178,200 overhead
 pool pro-rata by product revenue share (Product A 54.43%, Product B
 45.57%, consistent with the stated Q2 policy) — but allocates the entire
-$55,000 warehouse consolidation cost to Product A's cost center alone,
-with no stated rationale beyond "charged to Product A cost center."
+$55,000 warehouse consolidation cost to Product A's cost center alone.
+The schedule doesn't narrate its allocation method in words, so this
+only shows up by computing each row's implied split and comparing it to
+actual Q2 revenue share (Product A 54.43%, Product B 45.57%): the
+standard pool's $97,000 / $81,200 split matches that share almost
+exactly, but the one-time cost's $55,000 / $0 split does not — it's
+100% / 0%, nothing close to a revenue-share basis.
 
-The email thread establishes that the consolidation was **not**
-Product-A-specific: "Both sites currently store and ship for the whole
-product catalog, so this is a shared-infrastructure move, not tied to
-one line of business" (Kessler, May 8). Nothing in the thread mentions
-booking the cost to a single product, or gives any reason it should be —
-it is simply how Facilities coded the GL entry.
+The email thread explains why that's a problem: "Both sites currently
+store and ship for the whole product catalog" (Kessler, May 8) — i.e.
+the warehouse being consolidated serves both product lines, not just
+Product A. Nothing in the thread mentions booking the cost to a single
+product, or gives any reason it should be; the schedule's own
+`Reference` column just cites "Facilities invoice GL entry #33871 (cost
+center 4410)" — it's simply how Facilities coded the GL entry, not an
+economic allocation decision.
 
 Reallocating that $55,000 on the same pro-rata basis already used for
 the standard pool (54.43% / 45.57%) gives $29,938 to Product A and

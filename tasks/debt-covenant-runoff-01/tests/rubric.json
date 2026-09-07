@@ -1,0 +1,146 @@
+{
+  "task": "debt-covenant-runoff-01",
+  "scale": "binary pass/fail per criterion; weighted sum normalized to [0,1]",
+  "criteria": [
+    {
+      "id": "covenant-month-correct-with-timing-explained",
+      "category": "numeric_accuracy",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report identifies month 7 as the covenant-triggering month AND explicitly states the elevated rate applies starting month 8, not month 7 itself."
+    },
+    {
+      "id": "payoff-month-correct",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report identifies month 17 as the month the loan balance first reaches zero."
+    },
+    {
+      "id": "total-interest-consistent-with-table",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report's stated total interest figure is consistent with (traceable to) the sum of the monthly interest figures shown in its own schedule table, not just an unsupported final number."
+    },
+    {
+      "id": "full-24-month-table",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The month-by-month schedule table covers all 24 months individually, not a truncated or summarized subset."
+    },
+    {
+      "id": "rate-step-up-timing-explicit",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly explains the covenant rate-step-up timing rule (next month, not the trigger month itself) as part of its reasoning, not just as a number that happens to be correct."
+    },
+    {
+      "id": "interest-basis-explicit",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report explicitly states or clearly demonstrates that each month's interest is computed on the balance carried in from the end of the prior month (after that prior month's scheduled principal AND sweep), not on a same-month recalculated balance."
+    },
+    {
+      "id": "sweep-after-debt-service-explicit",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report explicitly states or clearly demonstrates that the cash sweep is calculated after that month's interest and scheduled principal are deducted from cash, not before."
+    },
+    {
+      "id": "payoff-stops-debt-service",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report correctly shows zero interest and zero principal payments for every month after the loan is fully repaid (months 18-24), with free cash flow simply accumulating into cash."
+    },
+    {
+      "id": "no-negative-balance",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT show a negative loan balance, or a sweep amount that would imply prepaying more than the remaining balance, in any month."
+    },
+    {
+      "id": "no-negative-cash",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT show a negative cash balance in any month (the correct schedule's lowest point is a positive ~$27,823 in month 7)."
+    },
+    {
+      "id": "executive-summary-headline-outcomes",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The executive summary states, up front, the payoff timing, total interest, covenant trigger month, and minimum cash point -- the four headline outcomes -- not just a generic restatement of the task."
+    },
+    {
+      "id": "full-schedule-table-present",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report includes the full 24-row month-by-month schedule table as a clearly labeled, structured table (not only prose)."
+    },
+    {
+      "id": "liquidity-risk-explained",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report explains the business/liquidity-risk implication of the minimum cash point (not just reporting the dollar figure and month)."
+    },
+    {
+      "id": "no-recipe-restated",
+      "category": "communication",
+      "weight": 1,
+      "negative": true,
+      "criterion": "The report does NOT simply restate the loan terms document verbatim in place of showing the actual computed schedule and reasoning."
+    },
+    {
+      "id": "answer-json-schema-complete",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "answer.json includes all ten required keys with values of the correct type (integer, float, or null as specified in the prompt)."
+    },
+    {
+      "id": "assumptions-stated-where-ambiguous",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "Where loan_terms.md could plausibly be read more than one way, the report states which reading it used as an explicit assumption, rather than silently picking one without comment."
+    },
+    {
+      "id": "no-misstated-terms",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT misstate any of the fixed loan terms (principal, base rate, elevated rate, minimum cash threshold, starting cash, sweep percentage) relative to loan_terms.md."
+    },
+    {
+      "id": "schedule-internally-validated",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report demonstrates that its own schedule was checked for internal consistency (e.g. balances never go negative, ending balance is exactly zero after payoff) rather than presenting unvalidated output."
+    },
+    {
+      "id": "zero-debt-service-months-correct",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report correctly identifies which months have zero interest and zero principal due to the loan already being fully repaid, rather than continuing to show scheduled payments past payoff."
+    },
+    {
+      "id": "explains-min-cash-causal-link",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report connects the minimum-cash month to its actual cause (that month's own negative free cash flow coinciding with scheduled debt service and no sweep cushion), rather than treating it as an unexplained coincidence that it's the same month as the covenant trigger."
+    }
+  ]
+}

@@ -60,6 +60,45 @@ basis (100% to one product) doesn't match the standard pool's basis
 that difference — a cross-file consistency check a shallow reader has no
 reason to perform unless they already suspect something.
 
+## Calibration history
+
+Real calibration runs (Haiku/Sonnet/Opus as three capability tiers,
+each solving the task blind from `instruction.md` + `environment/data/`
+only, scored with the actual `tests/` pipeline — not simulated):
+
+- **Round 1** (original `instruction.md`): all three scored 0.93-1.00.
+  Diagnosis: the prompt itself narrated the exact check to perform
+  ("check the allocation basis... against what the email thread says...
+  recompute if they disagree") — a leaked procedure, not a discovered
+  one.
+- **Round 2** (prompt fixed to be outcome-based, data files unchanged):
+  all three still scored 0.97-1.00, barely moved. Diagnosis: the data
+  files themselves narrated the answer almost as directly as the old
+  prompt did — the email stated "shared-infrastructure move, not tied
+  to one line of business" outright, and the allocation schedule
+  labeled each row's method in words, so the two mismatched bases could
+  be caught by reading two short strings, no computation required.
+- **Round 3** (this state): removed the editorializing conclusion from
+  the email (kept the underlying facts — both sites ship the whole
+  catalog, the cost was billed under a project code — but not the
+  "so this is shared, not tied to one line" framing), and removed the
+  schedule's `Allocation_Basis`/`Notes` columns that narrated each row's
+  method, leaving only dollar splits plus a document reference. Catching
+  the anomaly now requires computing each row's implied revenue share
+  and noticing the one-time cost's 100%/0% split doesn't match the
+  pattern the standard pool's split does — a real, if modest,
+  computational and inferential step instead of a reading-comprehension
+  one. Round 3 results: see the top of this file / task PR for the
+  actual scores once run.
+
+One real bug surfaced during Round 2 and is fixed, independent of the
+difficulty question above: `tests/check_programmatic.py` originally
+failed a technically-valid agent `answer.json` that happened to carry a
+UTF-8 BOM, reporting it as malformed. Fixed to use `utf-8-sig` decoding
+(a no-op for files without a BOM); re-verified against every existing
+edge case (missing directory, truly malformed JSON, wrong values) with
+no regression.
+
 ## Verification performed during authoring
 
 - **Programmatic correctness:** `solution/solve.py` computes every

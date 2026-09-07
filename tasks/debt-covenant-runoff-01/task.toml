@@ -1,0 +1,17 @@
+[task]
+name = "debt-covenant-runoff-01"
+domain = "finance-fpa"
+task_type = "end-to-end-analysis"
+version = "1.0.0"
+
+[labels]
+primary = ["FPA-VARIANCE"]
+secondary = ["COG", "DATA", "TSK"]
+
+[scoring]
+programmatic_weight = 0.30
+rubric_weight = 0.70
+programmatic_tolerance_note = "tight tolerance -- see tests/check_programmatic.py; NOT the 5% used in fpa-variance-analysis-01"
+
+[source]
+type = "expert-designed"

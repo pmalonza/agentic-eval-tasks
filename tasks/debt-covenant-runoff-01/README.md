@@ -128,12 +128,88 @@ requires information outside the provided files.
   well-trodden `python:3.11-slim` + `pip install` pattern already used
   (unverified for the same reason) by `fpa-variance-analysis-01`.
 
-## Calibration status
+## Calibration results (real run, 2026-09-08)
 
-Not yet run. Unlike `fpa-variance-analysis-01`, which went through
-three real calibration rounds before this task was written, this task
-has only been unit-tested at the checker level (bug-injection tests
-above) — its actual difficulty against real models is unverified until
-the same three-tier (Haiku/Sonnet/Opus) blind evaluation process is run
-and graded against `tests/`. That run is the next step, not yet
-performed as of this writing.
+Ran the same real calibration process used for `fpa-variance-analysis-01`:
+Haiku, Sonnet, and Opus each solved the task blind, from `instruction.md`
++ the two `environment/data/` files only, using code execution to run
+the actual 24-month simulation (not hand arithmetic). Each was explicitly
+instructed to stop and report rather than route around any tool block —
+both Opus and Haiku hit the same "subagents can't write a file literally
+named report.md" guardrail seen during `fpa-variance-analysis-01`'s
+calibration, correctly reported it, and returned full file content as
+text instead of working around it.
+
+**All three tiers got `answer.json` numerically exact** —
+`covenant_trigger_month=7`, `payoff_month=17`,
+`total_interest_paid_usd=84076.95`, and every other field matched the
+golden values to the cent. None of the three models misread the
+rate-step-up timing (the trap this task was specifically built around):
+all three explicitly stated that Month 7's own interest is still charged
+at the base rate and that the elevated 8.70% rate first applies in
+Month 8, and all three explicitly reasoned about (not just stumbled
+into) the sweep-after-debt-service ordering.
+
+Programmatic score was 1.0 for all three (every field within the flat
+$25 tolerance / exact match). Rubric scores, graded by hand
+criterion-by-criterion against `tests/rubric.json` (in lieu of a live
+LLM judge call, per this project's policy against spending shared
+credentials on unauthorized side calls):
+
+| Model | Programmatic | Rubric | Reward (0.30×prog + 0.70×rubric) |
+|---|---|---|---|
+| Haiku | 1.0 | 58/62 = 0.935 | **0.955** |
+| Sonnet | 1.0 | 60/62 = 0.968 | **0.977** |
+| Opus | 1.0 | 62/62 = 1.000 | **1.000** |
+
+The two rubric points Haiku lost: it never stated an explicit
+assumption anywhere a reading of `loan_terms.md` was ambiguous (no
+"Assumptions" section at all, unlike Sonnet and Opus), and its own
+reconciliation math didn't tie out — it reported total cash sweeps of
+"$456,649" and separately noted this "exceeds the original $1.50M by
+$19,149 due to rounding," when $19,149 is a real arithmetic
+inconsistency (its own per-month sweep figures sum to ~$437,500,
+matching golden), not a rounding artifact — a sign the schedule wasn't
+actually checked for internal consistency, even though `answer.json`
+itself came out exact. Sonnet lost the same "internal validation"
+point for a different reason: it claimed the files were "verified...
+cross-checked by hand" but that claim lived in its chat response, not
+inside `report.md` itself, so the deliverable alone doesn't demonstrate
+the check. Opus's `report.md` included an in-report reconciliation
+(scheduled principal + sweeps = original principal, cash roll-forward
+ties to the cent) and lost no points.
+
+## Calibration verdict
+
+**FAIL (too easy).** No model scored at or below the 0.5 ceiling — the
+lowest of three tiers, Haiku, still scored 0.955. Unlike
+`fpa-variance-analysis-01`, this is a **single-round** result (the
+mechanism wasn't iterated on after this first real test), but the
+outcome is the same: switching to a structurally different difficulty
+mechanism (long-horizon sequencing/timing rules instead of a hidden
+cross-file ratio mismatch) did not clear the ceiling either. All three
+models, including Haiku, correctly navigated every interacting rule
+this task was designed to trip up on — the rate-step-up timing, the
+interest-basis lag, and the sweep-after-debt-service ordering — via
+code execution, exactly as the design bet anticipated they might.
+
+**Diagnosis.** The design bet was that correct *rule interpretation*
+(as opposed to arithmetic volume) would be the hard part for a model
+with code-execution tools. That bet was wrong in the way that mattered
+for calibration: writing a correct simulation from a precisely-worded
+prose spec turned out to be well within reach for all three tiers
+tested, including Haiku. The rubric did surface real, if minor,
+differentiation between tiers (Haiku's missing assumptions section and
+uncaught arithmetic inconsistency, Sonnet's validation claim living
+outside the deliverable) — so the discriminator isn't completely inert,
+it just isn't nearly severe enough to pull any tier below 0.5.
+
+**Recommendation.** As with `fpa-variance-analysis-01`, do not tune
+this task's data or rubric weights to chase the 0.5 ceiling — that
+would mean reverse-engineering the rubric from which criteria these
+three models happened to fail, which is explicitly against this
+project's own authoring rules. A future attempt at clearing calibration
+for either task would need a *harder class of trap* than either
+"spot a mismatched ratio" or "get a multi-rule sequencing spec right" —
+both have now been tested for real and both leave every tested tier
+comfortably above 0.5.

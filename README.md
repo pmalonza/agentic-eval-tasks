@@ -18,6 +18,7 @@ full authoring contract every task in this repo follows.
 | Task | Domain | Type | Calibration | Description |
 |---|---|---|---|---|
 | [`fpa-variance-analysis-01`](tasks/fpa-variance-analysis-01/) | Finance / FP&A | Result Interpretation | ❌ **Fail (too easy)** — see below | Explain a Q2 gross-margin miss from a budget-vs-actual P&L and a cost allocation schedule that contains a booking error — correctly re-attributing the miss between two product lines requires cross-checking the allocation basis against an email thread, not just reconciling the arithmetic. |
+| [`debt-covenant-runoff-01`](tasks/debt-covenant-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Build a 24-month term-loan runoff schedule with an interacting covenant rate step-up and cash sweep — getting the month-to-month sequencing right (rate-step-up timing, interest basis, sweep-after-debt-service ordering, payoff cutoff) matters as much as any single formula. |
 
 ### `fpa-variance-analysis-01` calibration: honest negative result
 
@@ -33,6 +34,25 @@ would require, is in
 Kept in this repo as a worked example of the calibration process itself
 — including what it looks like when a task genuinely doesn't clear the
 bar — not as a claim that the task is calibration-ready.
+
+### `debt-covenant-runoff-01` calibration: honest negative result, second mechanism
+
+Built specifically to test a *different* difficulty mechanism than the
+FP&A task's hidden-ratio mismatch — long-horizon state tracking with
+several interacting timing rules, where a plausible one-rule
+misreading (applying a covenant rate step-up a month early) produces a
+confidently-wrong answer. Real single-round calibration (Haiku/Sonnet/
+Opus, blind, actual scoring pipeline) again found no model at or below
+0.5: Haiku 0.955, Sonnet 0.977, Opus 1.000. All three got every
+`answer.json` field numerically exact and correctly reasoned through
+the rate-step-up timing trap via code execution. Full writeup,
+including the per-model rubric breakdown and what actually
+differentiated the (small) score gaps between tiers, is in
+[the task's README](tasks/debt-covenant-runoff-01/README.md#calibration-verdict).
+Together with `fpa-variance-analysis-01`, this is now the second
+independent difficulty mechanism tested for real and found not to be
+enough — see that task's recommendation for what a harder trap would
+need to look like.
 
 ## Repo layout
 

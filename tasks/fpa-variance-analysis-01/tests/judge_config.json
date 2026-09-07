@@ -1,0 +1,18 @@
+{
+  "task_context": "FP&A analyst task: explain a Q2 gross-margin miss and correct a hidden cost-allocation error. The core thing to grade is whether the agent's report correctly re-attributes the miss between Product A and Product B after checking the allocation basis against the email thread, not just whether the bridge arithmetic balances.",
+  "rubric_path": "tests/rubric.json",
+  "golden_report_path": "solution/report.md",
+  "golden_answer_path": "solution/answer.json",
+  "agent_deliverables": {
+    "report": "report.md",
+    "answer": "answer.json"
+  },
+  "source_files_for_grounding": [
+    "environment/data/q2_budget_vs_actual.csv",
+    "environment/data/cost_allocation_schedule.csv",
+    "environment/data/email_thread.md"
+  ],
+  "trajectory_path": "trajectory.jsonl",
+  "judge_model_env_var": "JUDGE_MODEL",
+  "judge_model_default": "claude-sonnet-5"
+}

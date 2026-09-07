@@ -1,0 +1,17 @@
+{
+  "task_context": "Credit analyst task: build a 24-month runoff schedule for a three-tranche (Senior/Mezzanine/Subordinated) credit facility with a strict payment waterfall, a PIK-vs-cash toggle on the Mezzanine tranche, and a Subordinated tranche that stays on PIK until BOTH senior tranches are fully retired. A single covenant trigger produces two effects of different duration: a permanent Senior rate step-up and a one-month-only forced PIK on the Mezzanine tranche. The core thing to grade is whether the agent correctly tracked three interacting tranche balances through the waterfall priority, got the asymmetric duration of the two covenant effects right, and correctly gated the Subordinated tranche's conversion on both senior tranches (not just the Senior alone) -- not just whether the final numbers happen to be close.",
+  "rubric_path": "tests/rubric.json",
+  "golden_report_path": "solution/report.md",
+  "golden_answer_path": "solution/answer.json",
+  "agent_deliverables": {
+    "report": "report.md",
+    "answer": "answer.json"
+  },
+  "source_files_for_grounding": [
+    "environment/data/loan_terms.md",
+    "environment/data/monthly_cash_flow.csv"
+  ],
+  "trajectory_path": "trajectory.jsonl",
+  "judge_model_env_var": "JUDGE_MODEL",
+  "judge_model_default": "claude-sonnet-5"
+}

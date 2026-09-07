@@ -1,0 +1,18 @@
+{
+  "covenant_trigger_month": 7,
+  "tranche_a_payoff_month": 12,
+  "tranche_b_payoff_month": 15,
+  "tranche_c_conversion_month": 16,
+  "tranche_c_payoff_month": 18,
+  "total_tranche_a_cash_interest_usd": 77531.19,
+  "total_tranche_b_cash_interest_usd": 93029.97,
+  "total_tranche_b_pik_interest_usd": 7333.33,
+  "total_tranche_c_pik_interest_usd": 95020.07,
+  "total_tranche_c_cash_interest_usd": 11936.54,
+  "month_12_tranche_a_balance_usd": 0.0,
+  "month_12_tranche_b_balance_usd": 641566.7,
+  "month_12_tranche_c_balance_usd": 574671.01,
+  "month_24_cash_balance_usd": 2925148.9,
+  "min_cash_balance_usd": 103174.06,
+  "min_cash_month": 7
+}

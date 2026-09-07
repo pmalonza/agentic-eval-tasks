@@ -1,0 +1,17 @@
+[task]
+name = "tranche-waterfall-runoff-01"
+domain = "finance-fpa"
+task_type = "end-to-end-analysis"
+version = "1.0.0"
+
+[labels]
+primary = ["FPA-VARIANCE"]
+secondary = ["COG", "DATA", "TSK"]
+
+[scoring]
+programmatic_weight = 0.30
+rubric_weight = 0.70
+programmatic_tolerance_note = "flat $25 absolute tolerance per dollar field -- see tests/check_programmatic.py; smallest legitimate golden-vs-wrong-rule delta across both constructed bugs is $215.60"
+
+[source]
+type = "expert-designed"

@@ -1,0 +1,160 @@
+{
+  "task": "tranche-waterfall-runoff-01",
+  "scale": "binary pass/fail per criterion; weighted sum normalized to [0,1]",
+  "criteria": [
+    {
+      "id": "tranche-a-payoff-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report identifies Month 12 as the month Tranche A (Senior) is fully repaid."
+    },
+    {
+      "id": "tranche-b-payoff-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report identifies Month 15 as the month Tranche B (Mezzanine) is fully repaid."
+    },
+    {
+      "id": "tranche-c-conversion-and-payoff-correct",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report identifies Month 16 as the month Tranche C converts from PIK to cash-pay, and Month 18 as the month Tranche C is fully repaid."
+    },
+    {
+      "id": "covenant-month-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report identifies Month 7 as the covenant-triggering month (the only month with negative Free Cash Flow Before Debt Service)."
+    },
+    {
+      "id": "full-24-month-table",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The month-by-month schedule table covers all 24 months individually for all three tranches, not a truncated or summarized subset."
+    },
+    {
+      "id": "forced-pik-duration-correct",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report shows Tranche B's interest forced into PIK for Month 8 only, with Month 9 onward returning to the normal cash-vs-PIK sufficiency test (not treating the forced PIK as a permanent change)."
+    },
+    {
+      "id": "senior-permanent-vs-mezz-one-time-contrast-explained",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly explains, as part of its reasoning, that the covenant trigger produces two effects of different duration: Tranche A's rate step-up is permanent, while Tranche B's forced PIK lasts exactly one month."
+    },
+    {
+      "id": "conversion-gate-both-tranches-explained",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly explains that Tranche C's conversion to cash-pay requires BOTH Tranche A and Tranche B to reach zero, not Tranche A alone -- and correctly shows Tranche C still on PIK through Months 12-15 even though Tranche A is already retired by Month 12."
+    },
+    {
+      "id": "waterfall-priority-explicit",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report explicitly states or clearly demonstrates the strict payment priority (A before B before C) for interest, scheduled principal, and cash sweep alike."
+    },
+    {
+      "id": "sweep-single-recipient-per-month",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report's schedule shows each month's cash sweep applied entirely to a single tranche (the highest-priority one with a remaining balance), not split across multiple tranches in the same month."
+    },
+    {
+      "id": "no-negative-tranche-balance",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT show a negative balance, or a sweep/PIK amount that would imply a balance below zero, for any of the three tranches in any month."
+    },
+    {
+      "id": "no-negative-cash",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT show a negative cash balance in any month (the correct schedule's lowest point is a positive ~$103,174 in Month 7)."
+    },
+    {
+      "id": "payoff-stops-debt-service",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report correctly shows zero interest, zero scheduled principal, and zero sweep for each tranche in every month after that tranche is fully repaid."
+    },
+    {
+      "id": "executive-summary-headline-outcomes",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The executive summary states, up front, all three tranches' payoff/conversion timing, the covenant trigger month, and the minimum cash point -- not just a generic restatement of the task."
+    },
+    {
+      "id": "full-schedule-table-present",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report includes the full 24-row month-by-month schedule as a clearly labeled, structured table showing all three tranches (not only prose)."
+    },
+    {
+      "id": "liquidity-risk-explained",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report explains the business/liquidity-risk implication of the minimum cash point (not just reporting the dollar figure and month)."
+    },
+    {
+      "id": "no-recipe-restated",
+      "category": "communication",
+      "weight": 1,
+      "negative": true,
+      "criterion": "The report does NOT simply restate the loan terms document verbatim in place of showing the actual computed schedule and reasoning."
+    },
+    {
+      "id": "answer-json-schema-complete",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "answer.json includes all sixteen required keys with values of the correct type (integer, float, or null as specified in the prompt)."
+    },
+    {
+      "id": "cash-vs-pik-interest-tracked-separately",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report tracks and reports Tranche B's cash-paid interest separately from its PIK'd interest, and Tranche C's pre-conversion PIK interest separately from its post-conversion cash interest, rather than reporting a single blended interest figure per tranche."
+    },
+    {
+      "id": "assumptions-stated-where-ambiguous",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "Where loan_terms.md could plausibly be read more than one way (e.g. whether tranche balances are evaluated at month-start or month-end for the conversion test), the report states which reading it used as an explicit assumption."
+    },
+    {
+      "id": "no-misstated-terms",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT misstate any of the fixed facility terms (tranche principal amounts, interest rates, minimum cash threshold, starting cash, sweep percentage, or the payment priority order) relative to loan_terms.md."
+    },
+    {
+      "id": "schedule-internally-validated",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report demonstrates that its own schedule was checked for internal consistency (e.g. no tranche balance goes negative, a lower-priority tranche never receives a sweep while a higher-priority tranche still has a balance) rather than presenting unvalidated output."
+    }
+  ]
+}

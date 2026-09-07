@@ -1,0 +1,146 @@
+{
+  "task": "loan-daycount-accrual-01",
+  "scale": "binary pass/fail per criterion; weighted sum normalized to [0,1]",
+  "criteria": [
+    {
+      "id": "daycount-basis-correct-not-flat-monthly",
+      "category": "numeric_accuracy",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report's total interest figure reflects true Actual/360 day-count accrual (approximately $85,127), not the flat 1/12-of-annual-rate or 30/360 shortcut (which would produce approximately $84,077 instead -- a distinct, identifiable wrong figure)."
+    },
+    {
+      "id": "leap-year-february-handled",
+      "category": "numeric_accuracy",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report correctly treats February 2028 as a 29-day month (2028 is a leap year) and February 2027 as a 28-day month, with the two months' interest figures reflecting that difference rather than being treated identically."
+    },
+    {
+      "id": "covenant-month-correct-with-timing-explained",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report identifies Month 7 (July 2027) as the covenant-triggering month AND explicitly states the elevated rate applies starting Month 8 (August 2027), not Month 7 itself."
+    },
+    {
+      "id": "payoff-month-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report identifies Month 17 (May 2028) as the month the loan balance first reaches zero."
+    },
+    {
+      "id": "full-24-month-table",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The month-by-month schedule table covers all 24 months individually, not a truncated or summarized subset."
+    },
+    {
+      "id": "daycount-formula-explicit",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly states the Actual/360 formula used (annual rate / 360, multiplied by the actual number of calendar days in that month) as part of its reasoning, not just as a number that happens to be correct."
+    },
+    {
+      "id": "day-counts-shown-per-month",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The schedule table (or accompanying text) shows the actual day count used for each calendar month, so a reviewer can verify the day-count basis was applied consistently rather than only asserting the final totals."
+    },
+    {
+      "id": "rate-step-up-timing-explicit",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report explicitly explains the covenant rate-step-up timing rule (next month, not the trigger month itself) as part of its reasoning."
+    },
+    {
+      "id": "sweep-after-debt-service-explicit",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report explicitly states or clearly demonstrates that the cash sweep is calculated after that month's interest and scheduled principal are deducted from cash, not before."
+    },
+    {
+      "id": "payoff-stops-debt-service",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report correctly shows zero interest and zero principal payments for every month after the loan is fully repaid (Months 18-24), with free cash flow simply accumulating into cash."
+    },
+    {
+      "id": "no-negative-balance",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT show a negative loan balance, or a sweep amount that would imply prepaying more than the remaining balance, in any month."
+    },
+    {
+      "id": "no-negative-cash",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT show a negative cash balance in any month (the correct schedule's lowest point is a positive ~$27,590 in Month 7)."
+    },
+    {
+      "id": "executive-summary-headline-outcomes",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The executive summary states, up front, the payoff timing, total interest, covenant trigger month, and minimum cash point -- the four headline outcomes -- not just a generic restatement of the task."
+    },
+    {
+      "id": "full-schedule-table-present",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report includes the full 24-row month-by-month schedule table as a clearly labeled, structured table (not only prose)."
+    },
+    {
+      "id": "liquidity-risk-explained",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report explains the business/liquidity-risk implication of the minimum cash point (not just reporting the dollar figure and month)."
+    },
+    {
+      "id": "no-recipe-restated",
+      "category": "communication",
+      "weight": 1,
+      "negative": true,
+      "criterion": "The report does NOT simply restate the loan terms document verbatim in place of showing the actual computed schedule and reasoning."
+    },
+    {
+      "id": "answer-json-schema-complete",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "answer.json includes all ten required keys with values of the correct type (integer, float, or null as specified in the prompt)."
+    },
+    {
+      "id": "assumptions-stated-where-ambiguous",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "Where loan_terms.md could plausibly be read more than one way, the report states which reading it used as an explicit assumption, rather than silently picking one without comment."
+    },
+    {
+      "id": "no-misstated-terms",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT misstate any of the fixed loan terms (principal, base rate, elevated rate, day-count convention, minimum cash threshold, starting cash, sweep percentage) relative to loan_terms.md."
+    },
+    {
+      "id": "schedule-internally-validated",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report demonstrates that its own schedule was checked for internal consistency (e.g. balances never go negative, ending balance is exactly zero after payoff) rather than presenting unvalidated output."
+    }
+  ]
+}

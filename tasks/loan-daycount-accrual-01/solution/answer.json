@@ -1,0 +1,12 @@
+{
+  "covenant_trigger_month": 7,
+  "payoff_month": 17,
+  "total_interest_paid_usd": 85126.82,
+  "month_6_balance_usd": 884015.61,
+  "month_12_balance_usd": 469009.73,
+  "month_18_balance_usd": 0.0,
+  "month_24_balance_usd": 0.0,
+  "month_24_cash_balance_usd": 1204873.18,
+  "min_cash_balance_usd": 27589.93,
+  "min_cash_month": 7
+}

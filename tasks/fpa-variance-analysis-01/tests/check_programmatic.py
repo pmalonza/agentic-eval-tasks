@@ -38,9 +38,13 @@ ALL_FIELDS = NUMERIC_FIELDS + ENUM_FIELDS
 
 def _load_json_safe(path: Path) -> dict | None:
     try:
-        with open(path) as fh:
+        # utf-8-sig transparently strips a leading UTF-8 BOM if present
+        # (e.g. from PowerShell's default UTF-8 write behavior) and is a
+        # no-op for files without one -- an agent's JSON should not be
+        # marked malformed over a BOM its own real work is correct past.
+        with open(path, encoding="utf-8-sig") as fh:
             return json.load(fh)
-    except (OSError, json.JSONDecodeError):
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
         return None
 
 

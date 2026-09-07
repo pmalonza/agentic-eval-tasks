@@ -1,0 +1,13 @@
+{
+  "total_gm_miss_points": 5.09,
+  "total_gp_variance_usd": -124200.0,
+  "product_a_miss_points_as_booked": 5.67,
+  "product_b_miss_points_as_booked": 4.52,
+  "product_a_miss_points_corrected": 3.09,
+  "product_b_miss_points_corrected": 7.61,
+  "largest_single_driver": "price",
+  "one_time_cost_usd": 55000.0,
+  "one_time_cost_corrected_product_a_usd": 29938.27,
+  "one_time_cost_corrected_product_b_usd": 25061.73,
+  "recommended_focus_product": "Product B"
+}

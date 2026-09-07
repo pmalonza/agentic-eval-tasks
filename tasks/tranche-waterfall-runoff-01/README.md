@@ -126,10 +126,89 @@ tranches simultaneously, not in guessing an unstated rule.
   caveats as the three predecessor tasks in this repo, for the same
   reasons.
 
-## Calibration status
+## Calibration results (real run, 2026-09-08)
 
-Not yet run as of this writing. This is the fourth task in this repo and
-the first to test multi-entity waterfall complexity rather than a
-single-loan rule; its actual difficulty against real models is unverified
-until the same three-tier (Haiku/Sonnet/Opus) blind evaluation process is
-run and graded against `tests/`.
+Ran the same real calibration process used for the three predecessor
+tasks: Haiku, Sonnet, and Opus each solved the task blind, from
+`instruction.md` + the two `environment/data/` files only, using code
+execution to run the actual three-tranche simulation. Opus hit the same
+"subagents can't write a file literally named report.md" guardrail seen
+in prior rounds, correctly reported it, and returned full file content as
+text instead of working around it.
+
+**All three tiers got `answer.json` numerically exact — all 16 fields,
+across all three tiers, with zero exceptions.** None misapplied the
+forced-PIK duration (all correctly showed Month 8 only, reverting to the
+normal cash-sufficiency test from Month 9). None gated Tranche C's
+conversion on Tranche A alone — all three correctly kept Tranche C on PIK
+through Months 12-15 despite Tranche A already being retired, converting
+only in Month 16 once Tranche B also cleared. Opus additionally
+identified, unprompted, the exact same subtle edge case flagged in this
+README's construction notes (Month 15's $452.99 sweep excess not
+cascading to Tranche C) and correctly justified the "sweep capped at
+recipient's balance, no cascade" reading directly from `loan_terms.md`.
+
+Programmatic score was 1.0 for all three. Rubric scores, graded by hand
+criterion-by-criterion against `tests/rubric.json` (in lieu of a live LLM
+judge call, per this project's policy against spending shared credentials
+on unauthorized side calls):
+
+| Model | Programmatic | Rubric | Reward (0.30×prog + 0.70×rubric) |
+|---|---|---|---|
+| Haiku | 1.0 | 64/68 = 0.941 | **0.959** |
+| Sonnet | 1.0 | 66/68 = 0.971 | **0.979** |
+| Opus | 1.0 | 68/68 = 1.000 | **1.000** |
+
+Notably, **every score here is higher than this task's simpler
+predecessor** (`loan-daycount-accrual-01`, Haiku 0.831). Haiku's only
+gaps: no assumptions section anywhere in its report (a recurring pattern
+across every task in this repo so far), and a genuine internal
+inconsistency it never caught — it states the Senior rate step-up costs
+"approximately $1,667 per month" in one paragraph and "approximately
+$833 per month" for the identical effect two paragraphs later, never
+reconciled. Sonnet's only gap was the same "no explicit internal
+validation" pattern seen in earlier tasks. Opus passed every criterion,
+including a genuine reconciliation table (cash + PIK interest by tranche
+summing to a stated facility total) inside the report itself.
+
+## Calibration verdict
+
+**FAIL (too easy) — and the added complexity made this task *easier* to
+score well on, not harder.** This is the fourth independent difficulty
+mechanism tested for real in this repo (after a hidden cross-file ratio
+mismatch, multi-rule sequencing/timing, and a named-but-substitutable
+wrong day-count convention), and the fourth to fail to clear the 0.5
+ceiling. Unlike the previous three tasks, this one does not even show the
+widest-tier-spread pattern that gave some hope of a future task clearing
+the bar — Haiku's worst showing here (0.959) is actually its *best*
+showing across all four tasks in this repo.
+
+**Diagnosis.** The working hypothesis going into this task was that
+compounding interacting state across three tranches — rather than one or
+two rules on a single loan — would create enough surface area for a
+single implementation bug to cascade and meaningfully depress a weaker
+tier's score. That hypothesis is refuted by this result. All three tiers,
+including Haiku, correctly tracked three simultaneous tranche balances,
+a PIK-vs-cash toggle, an asymmetric-duration covenant, and a
+two-tranche-dependent conversion gate — on a single blind attempt, via
+code execution — with zero numeric errors. The amount of *state* a model
+has to track does not appear to be the bottleneck at all, as long as
+every rule governing that state is stated precisely and completely.
+
+**Recommendation, updated after four negative results.** All four
+mechanisms tested in this repo so far share the same underlying shape: a
+fully-specified, deterministic rule set that a model with code-execution
+tools can translate into a correct simulation once it reads the rules
+carefully — whether that rule set is small (one loan, one covenant) or
+large (three tranches, a waterfall, two covenant effects). Making the
+rule set bigger does not change that shape, and this result suggests it
+will not clear the ceiling no matter how large it gets. A task that
+actually clears calibration for this class of model most likely needs a
+*different* shape of difficulty entirely: real ambiguity where competent
+experts could reasonably disagree (not a hidden-but-resolvable
+inconsistency), a domain-knowledge gap that is not spelled out anywhere
+in the provided materials and cannot be derived from them, or unstructured
+/ messy real-world source data (e.g. actual filings or documents) where
+extraction and judgment — not simulation — is the hard part. Continuing
+to build bigger deterministic simulate-and-report tasks in this family is
+not likely to be a good use of further effort based on this evidence.

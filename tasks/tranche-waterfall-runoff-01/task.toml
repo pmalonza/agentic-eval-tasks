@@ -15,3 +15,10 @@ programmatic_tolerance_note = "flat $25 absolute tolerance per dollar field -- s
 
 [source]
 type = "expert-designed"
+
+[calibration]
+verdict = "fail_too_easy"
+ceiling = 0.5
+lowest_reward_observed = 0.959
+rounds_run = 1
+last_run_date = "2026-09-08"

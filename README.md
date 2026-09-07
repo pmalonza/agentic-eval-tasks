@@ -20,6 +20,7 @@ full authoring contract every task in this repo follows.
 | [`fpa-variance-analysis-01`](tasks/fpa-variance-analysis-01/) | Finance / FP&A | Result Interpretation | ❌ **Fail (too easy)** — see below | Explain a Q2 gross-margin miss from a budget-vs-actual P&L and a cost allocation schedule that contains a booking error — correctly re-attributing the miss between two product lines requires cross-checking the allocation basis against an email thread, not just reconciling the arithmetic. |
 | [`debt-covenant-runoff-01`](tasks/debt-covenant-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Build a 24-month term-loan runoff schedule with an interacting covenant rate step-up and cash sweep — getting the month-to-month sequencing right (rate-step-up timing, interest basis, sweep-after-debt-service ordering, payoff cutoff) matters as much as any single formula. |
 | [`loan-daycount-accrual-01`](tasks/loan-daycount-accrual-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Same loan mechanics as `debt-covenant-runoff-01`, but interest accrues on a real-calendar Actual/360 basis (spanning a leap-year February) instead of a flat monthly fraction — the trap is a plausible, named-but-easy-to-substitute wrong day-count convention that collapses to a different task's already-correct answer. |
+| [`tranche-waterfall-runoff-01`](tasks/tranche-waterfall-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | A three-tranche (Senior/Mezzanine/Subordinated) credit facility with a strict payment waterfall, a PIK-vs-cash toggle, and a single covenant trigger producing two effects of deliberately different duration — testing whether compound multi-entity complexity, not just one loan's rules, could push a weaker tier below the ceiling. It didn't. |
 
 ### `fpa-variance-analysis-01` calibration: honest negative result
 
@@ -78,6 +79,41 @@ inconsistency, multi-rule sequencing, named-but-substitutable wrong
 convention) have now each been tested for real and each left every
 tier comfortably above 0.5 — see that task's recommendation for what
 kind of mechanism would need to be different next.
+
+### `tranche-waterfall-runoff-01` calibration: honest negative result, and the compound-complexity hypothesis is refuted
+
+Built to test a specifically different hypothesis than the three
+predecessor tasks: instead of one loan with one or two interacting rules,
+this uses three tranches with a strict payment waterfall, a PIK-vs-cash
+toggle, and a covenant trigger producing two effects of deliberately
+different duration — the bet being that compounding *state* across
+multiple entities, not just rules on one loan, would create enough
+surface area for a bug to cascade and depress a weaker tier's score. Real
+single-round calibration refutes this directly: **every score is higher
+than the simpler day-count task's** — Haiku 0.959, Sonnet 0.979, Opus
+1.000. All three tiers got `answer.json` numerically exact across all 16
+fields with zero exceptions, correctly handling the asymmetric covenant
+durations and the two-tranche-dependent conversion gate on a single blind
+attempt via code execution. Opus even independently identified a subtle
+edge case (a sweep-excess-doesn't-cascade rule) the task's own author had
+to verify by hand. Full writeup, including the per-model rubric breakdown
+and the updated recommendation after four consecutive negative results,
+is in
+[the task's README](tasks/tranche-waterfall-runoff-01/README.md#calibration-verdict).
+
+**Four independent difficulty mechanisms — hidden cross-file
+inconsistency, multi-rule sequencing, a named-but-substitutable wrong
+convention, and now compound multi-entity state — have each been tested
+for real and each left every tier comfortably above 0.5.** All four share
+one shape: a fully-specified, deterministic rule set a model with
+code-execution tools can translate into a correct simulation once it
+reads the rules carefully, regardless of how large or complex that rule
+set is. Based on this evidence, further tasks in this family (bigger,
+more rules, more entities) are unlikely to clear the ceiling; the
+`tranche-waterfall-runoff-01` README's recommendation section lays out
+what a structurally different class of difficulty — genuine ambiguity,
+an undocumented domain-knowledge gap, or messy unstructured source data —
+would need to look like instead.
 
 ## Repo layout
 

@@ -1,0 +1,146 @@
+{
+  "task": "fpa-variance-analysis-01",
+  "scale": "binary pass/fail per criterion; weighted sum normalized to [0,1]",
+  "criteria": [
+    {
+      "id": "bridge-ties-out",
+      "category": "numeric_reasoning",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report presents a gross-profit bridge whose components sum to the actual-minus-budget GP variance (within $1,000), not just a list of unreconciled observations."
+    },
+    {
+      "id": "identifies-price-as-largest-driver",
+      "category": "numeric_reasoning",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report identifies Product B's price cut as the single largest driver of the total gross-profit miss, ahead of volume and the overhead effect."
+    },
+    {
+      "id": "does-not-lead-with-volume",
+      "category": "numeric_reasoning",
+      "weight": 4,
+      "negative": true,
+      "criterion": "The report does NOT frame unit-volume decline as the primary cause of the margin miss or spend the majority of its causal narrative on volume/mix."
+    },
+    {
+      "id": "quantifies-volume-share",
+      "category": "numeric_reasoning",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report states or clearly implies that volume is the smallest of the three dollar-value drivers of the GP variance, not merely 'a factor'."
+    },
+    {
+      "id": "flags-allocation-basis-inconsistency",
+      "category": "causal_diagnosis",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly identifies that the one-time warehouse consolidation cost was allocated on a different basis (100% to one product) than the standard overhead pool (pro-rata by revenue), and names this as the root issue -- not merely listing the cost as a normal overhead increase."
+    },
+    {
+      "id": "grounds-anomaly-in-email-thread",
+      "category": "causal_diagnosis",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report connects the allocation inconsistency to the email thread's description of the consolidation as shared/company-wide infrastructure, rather than asserting the inconsistency without evidence from the source material."
+    },
+    {
+      "id": "no-fabricated-numbers",
+      "category": "causal_diagnosis",
+      "weight": 5,
+      "negative": true,
+      "criterion": "The report does NOT include dollar figures, percentages, or dates that cannot be traced to the three provided source files."
+    },
+    {
+      "id": "overhead-effect-explained-correctly",
+      "category": "causal_diagnosis",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report correctly explains that the overhead dollar effect at the company level is real (driven by the one-time cost net of lower base-pool overhead from reduced revenue), distinct from which product line absorbs it."
+    },
+    {
+      "id": "recomputes-corrected-split",
+      "category": "attribution_correction",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report recomputes the product-level margin miss under a consistent (pro-rata) allocation of the one-time cost, rather than only reporting the as-booked split."
+    },
+    {
+      "id": "flips-the-priority-product",
+      "category": "attribution_correction",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report states that Product B's corrected miss is larger than Product A's corrected miss -- the reverse of the as-booked figures -- and gets this direction right."
+    },
+    {
+      "id": "does-not-blame-product-a-ops",
+      "category": "attribution_correction",
+      "weight": 4,
+      "negative": true,
+      "criterion": "The report does NOT recommend that Product A's operations or cost structure be investigated as the primary corrective action, after having shown the corrected numbers."
+    },
+    {
+      "id": "notes-net-zero-at-company-level",
+      "category": "attribution_correction",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report notes that the allocation correction nets to zero at the total-company level -- i.e. it changes attribution between product lines, not the total company miss."
+    },
+    {
+      "id": "reallocation-basis-consistent-with-policy",
+      "category": "attribution_correction",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The corrected allocation the report proposes uses the same pro-rata-by-revenue basis already documented for the standard overhead pool, rather than an invented or unexplained alternative methodology."
+    },
+    {
+      "id": "forward-looking-recommendation",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report includes a recommendation for how Q3+ reporting or allocation policy should change, not only a restatement of this quarter's corrected numbers."
+    },
+    {
+      "id": "executive-summary-present",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report opens with a concise executive summary stating the headline miss, the root cause, and the recommendation -- usable as a standalone summary for a time-pressed reader."
+    },
+    {
+      "id": "no-recipe-restated",
+      "category": "communication",
+      "weight": 1,
+      "negative": true,
+      "criterion": "The report does NOT simply restate the prompt's instructions back as if they were findings (e.g. 'I built a bridge that ties out' with no supporting figures)."
+    },
+    {
+      "id": "clear-attribution-table",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report presents the budget / as-booked / corrected comparison for both product lines in a clearly labeled table or equivalent structured format, not only prose."
+    },
+    {
+      "id": "answer-json-schema-complete",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "answer.json includes all eleven required keys with values of the correct type (float or string enum as specified in the prompt)."
+    },
+    {
+      "id": "assumptions-stated",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report states any assumption made where the source material was ambiguous (e.g. choice of reallocation basis), rather than presenting an assumption as an established fact."
+    },
+    {
+      "id": "does-not-overcorrect-standard-pool",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": true,
+      "criterion": "The report does NOT cast doubt on the standard overhead pool's allocation (which is consistent with stated policy and not part of the anomaly) or treat the entire $233,200 overhead figure as unreliable."
+    }
+  ]
+}

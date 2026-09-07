@@ -15,9 +15,24 @@ full authoring contract every task in this repo follows.
 
 ## Tasks
 
-| Task | Domain | Type | Description |
-|---|---|---|---|
-| [`fpa-variance-analysis-01`](tasks/fpa-variance-analysis-01/) | Finance / FP&A | Result Interpretation | Explain a Q2 gross-margin miss from a budget-vs-actual P&L and a cost allocation schedule that contains a booking error — correctly re-attributing the miss between two product lines requires cross-checking the allocation basis against an email thread, not just reconciling the arithmetic. |
+| Task | Domain | Type | Calibration | Description |
+|---|---|---|---|---|
+| [`fpa-variance-analysis-01`](tasks/fpa-variance-analysis-01/) | Finance / FP&A | Result Interpretation | ❌ **Fail (too easy)** — see below | Explain a Q2 gross-margin miss from a budget-vs-actual P&L and a cost allocation schedule that contains a booking error — correctly re-attributing the miss between two product lines requires cross-checking the allocation basis against an email thread, not just reconciling the arithmetic. |
+
+### `fpa-variance-analysis-01` calibration: honest negative result
+
+Real 3-tier calibration (Haiku/Sonnet/Opus, three independent rounds,
+graded with the task's actual scoring pipeline) never got a single
+model at or below the 0.5 difficulty ceiling — not in the original
+version, not after fixing a leaked-procedure prompt, not after removing
+the data files' narrated allocation basis. Scores ranged 0.93-1.00
+across all three rounds. Full writeup, including *why* two rounds of
+difficulty-strengthening didn't move the needle and what a real fix
+would require, is in
+[the task's README](tasks/fpa-variance-analysis-01/README.md#calibration-verdict-final).
+Kept in this repo as a worked example of the calibration process itself
+— including what it looks like when a task genuinely doesn't clear the
+bar — not as a claim that the task is calibration-ready.
 
 ## Repo layout
 

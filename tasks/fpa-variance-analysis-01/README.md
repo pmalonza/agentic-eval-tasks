@@ -88,8 +88,63 @@ only, scored with the actual `tests/` pipeline — not simulated):
   and noticing the one-time cost's 100%/0% split doesn't match the
   pattern the standard pool's split does — a real, if modest,
   computational and inferential step instead of a reading-comprehension
-  one. Round 3 results: see the top of this file / task PR for the
-  actual scores once run.
+  one.
+
+  **Round 3 results: 0.98-1.00 — no better than Round 2. Haiku actually
+  scored higher (1.00) than in either prior round.** All three models
+  independently computed the revenue-share ratios themselves and
+  compared them to the schedule's splits, rather than reading a stated
+  inconsistency off the page — confirmed by inspecting their reports,
+  which show the reverse-engineered percentages worked out by hand.
+  Removing the narration didn't remove the capability; it just moved
+  the same two-step check (compute a ratio, compare it, connect it to
+  one plainly-stated email fact) from "read it" to "compute it," and
+  that step turned out not to be hard for any of the three tiers,
+  including Haiku.
+
+## Calibration verdict (final)
+
+| Round | Haiku | Sonnet | Opus | Change made |
+|---|---|---|---|---|
+| 1 | 0.93 | 1.00 | 1.00 | (baseline — leaked procedure in the prompt) |
+| 2 | 0.97 | 0.98 | 1.00 | Prompt rewritten to be outcome-based |
+| 3 | **1.00** | 0.98 | 1.00 | Data files de-narrated (no stated allocation basis, softer email) |
+
+**Verdict: FAIL (too easy).** No model, across any of three independent
+rounds and two rounds of deliberate difficulty-strengthening, scored at
+or below the 0.5 ceiling. This is a real, negative result, not a
+placeholder — the task was iterated on in good faith across both levers
+the standard playbook calls for (move information out of the prompt;
+strengthen the load-bearing discriminator in the data) and neither
+moved the needle.
+
+**Diagnosis.** The trap's underlying mechanism — compute two ratios,
+notice they don't match, connect the mismatch to one plainly-stated
+fact in a three-message email — is not a hard skill for current models
+at any of the three tiers tested here, regardless of how much surface
+narration is stripped from the prompt or the data. Obscuring the
+*presentation* of a mechanism that isn't intrinsically hard just makes
+the model do slightly more arithmetic on the way to the same answer.
+
+**This is not unique to this task or this construction.** The same
+failure mode — no model at or below 0.5 — shows up in the real
+Agentic SciCode project's own QC output on a structurally unrelated,
+far more technical task (an RNA-design optimization coding task), where
+three frontier models landed at 0.57-0.68. Clearing the 0.5 ceiling
+appears to be a generally hard bar, and for a financial-consistency
+trap specifically, no amount of re-hiding the same mechanism is likely
+to clear it.
+
+**Recommendation.** Do not continue tuning this task's data
+presentation — two rounds of exactly that (moving information out of
+the prompt, then out of the data) produced no measurable difficulty
+increase. A future revision aimed at clearing calibration would need a
+*structurally different* discriminator on top of this scenario (e.g. a
+second, independent trap that doesn't share the same "compute a ratio,
+compare it" mechanism), not a better-hidden version of this one. Ship
+this task, if at all, as documentation of a well-executed calibration
+process with an honest negative result — not as a task that has passed
+the difficulty gate.
 
 One real bug surfaced during Round 2 and is fixed, independent of the
 difficulty question above: `tests/check_programmatic.py` originally

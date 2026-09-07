@@ -15,3 +15,13 @@ programmatic_tolerance_pct = 5.0
 
 [source]
 type = "expert-designed"
+
+[calibration]
+# Real 3-tier calibration (Haiku/Sonnet/Opus), 3 rounds, graded with the
+# actual tests/ pipeline -- not simulated. See tasks/fpa-variance-analysis-01/README.md
+# "Calibration verdict" for the full writeup.
+verdict = "fail_too_easy"
+ceiling = 0.5
+lowest_reward_observed = 0.93
+rounds_run = 3
+last_run_date = "2026-09-07"

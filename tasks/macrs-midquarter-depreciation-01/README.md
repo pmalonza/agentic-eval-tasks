@@ -132,17 +132,100 @@ which convention applies once the rule is known).
   caveats as the four predecessor tasks in this repo, for the same
   reasons.
 
-## Calibration status
+## Calibration results (real run, 2026-09-08)
 
-Not yet run as of this writing. This is the fifth task in this repo and
-the first to deliberately test a domain-knowledge gap rather than a
-fully-specified rule set; its actual difficulty against real models is
-unverified until the same three-tier (Haiku/Sonnet/Opus) blind evaluation
-process is run and graded against `tests/`. Worth noting honestly going
-in: the MACRS mid-quarter convention is a commonly-taught, heavily
-documented topic (it appears in virtually every intermediate accounting
-and CPA-exam-prep resource), so there is a real chance it fails to clear
-the ceiling for the same underlying reason the previous four tasks did —
-frontier models tend to already know well-documented professional
-material cold. That is precisely the empirical question this task is
-built to answer, not something to be assumed either way in advance.
+Ran the same real calibration process used for the four predecessor
+tasks: Haiku, Sonnet, and Opus each solved the task blind, from
+`instruction.md` + the two `environment/data/` files only, using code
+execution — and this time, explicitly instructed to solve from their own
+knowledge with **no internet access**, so the test measures what each
+model actually knows, not what it can look up. Opus hit the same
+"subagents can't write a file literally named report.md" guardrail seen
+in prior rounds, correctly reported it, and returned full file content as
+text instead of working around it; it also independently caught and
+correctly overwrote a stale artifact from an unrelated prior task left in
+its sandbox.
+
+**All three tiers got every tested field of `answer.json` numerically
+exact, and all three correctly identified that the mid-quarter convention
+applies (52.00% Q4 share, correctly triggering the >40% rule) without any
+hint in the task materials.** Sonnet and Opus both went further than the
+required deliverables: unprompted, both computed the full six-year
+schedule for validation, and both reproduced the actual IRS-published
+Tables A-2 through A-5 percentages exactly for years 3-6, not just the
+tested years 1-2. Opus additionally re-derived the same percentages from
+first principles (200% declining balance with the mid-quarter timing
+fractions) as an independent cross-check against its own recalled table
+values, and confirmed the two methods agreed to the cent.
+
+Programmatic score was 1.0 for all three. Rubric scores, graded by hand
+criterion-by-criterion against `tests/rubric.json` (in lieu of a live LLM
+judge call, per this project's policy against spending shared credentials
+on unauthorized side calls):
+
+| Model | Programmatic | Rubric | Reward (0.30×prog + 0.70×rubric) |
+|---|---|---|---|
+| Haiku | 1.0 | 53/53 = 1.000 | **1.000** |
+| Sonnet | 1.0 | 53/53 = 1.000 | **1.000** |
+| Opus | 1.0 | 53/53 = 1.000 | **1.000** |
+
+This is the flattest result of any task in this repo — zero
+differentiation between tiers. One genuine, if ungraded, nuance is worth
+recording: Haiku's own extended six-year table (not required by
+`answer.json`, but included in its report as a validation exercise) is
+subtly **wrong** for years 3-6 — it fabricates figures that happen to sum
+correctly to each asset's cost basis but do not match the real IRS
+tables (e.g. its EQ-101 years 4-6 are 9.36%/9.36%/4.68% against the
+actual 11.01%/11.01%/1.38%), unlike Sonnet and Opus, which both
+reproduced the true published values exactly. This never affects the
+score, because the answer schema only requires years 1-2 plus an
+aggregate six-year total (which Haiku's fabricated breakdown still sums
+to correctly) — but it's a real signal that Haiku's grip on this specific
+domain fact is shallower than the larger models', even on a task where
+all three land at a perfect score.
+
+## Calibration verdict
+
+**FAIL (too easy) — and the most decisive fail of any task in this
+repo.** All three tiers scored a perfect 1.0, with no differentiation at
+all. The pre-registered concern in this README's "Calibration status"
+section (before the run) was that the MACRS mid-quarter convention is
+commonly-taught, heavily documented material, and that frontier models
+would likely already know it cold — that concern is fully confirmed. Not
+only did every tier know the rule exists and correctly apply it, two of
+the three tiers had the *exact* published percentage tables memorized
+well enough to reproduce all six years of two different quarter-specific
+tables from memory, unprompted, with no internet access.
+
+**Diagnosis.** This is the most informative negative result in the
+series precisely because it isolates the variable most cleanly: this
+task has almost no rule complexity (a single yes/no threshold test plus
+a table lookup) and no interacting state at all — the only thing being
+tested is whether the specific fact is known. It was known, with high
+fidelity, by all three tiers. This directly falsifies the premise this
+task was built to test: that withholding a real, standard,
+professionally-required domain fact (rather than complicating a
+fully-specified rule set) would be enough to separate tiers. For
+well-documented professional knowledge — whether procedural rules (the
+four predecessor tasks) or discrete facts (this task) — current frontier
+and mid-tier models appear to have deep, reliable recall, not just
+surface familiarity.
+
+**Recommendation, after five consecutive negative results across two
+fundamentally different eligibility philosophies.** Fully-specified rule
+sets (however large) and well-documented domain facts (however
+specialized-sounding) have each now been tested for real, multiple times,
+against the same three tiers, and none has produced a single sub-0.5
+score. The two axes not yet tested in this repo are: (1) a domain fact
+that is real but **not** heavily represented in public training material
+— genuinely obscure, current, or narrowly-held professional knowledge,
+which is hard to source reliably without introducing unfairness or
+authoring risk (see this task's own knowledge-currency caveats); and (2)
+tasks requiring a **judgment call under real ambiguity**, where no single
+answer is mechanically or factually determined and reasonable experts
+could disagree — a structurally different kind of task than anything
+tried in this repo so far, since every task here (including this one) has
+had exactly one correct, well-defined answer once the relevant rule or
+fact is known. Continuing to build more "spot the fact" or "implement the
+spec" tasks in either family is unlikely to be a good use of further
+effort based on this evidence.

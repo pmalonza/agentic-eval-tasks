@@ -16,5 +16,12 @@ programmatic_tolerance_note = "flat $10 absolute tolerance per dollar field, 0.5
 [source]
 type = "expert-designed"
 
+[calibration]
+verdict = "fail_too_easy"
+ceiling = 0.5
+lowest_reward_observed = 1.0
+rounds_run = 1
+last_run_date = "2026-09-08"
+
 [eligibility]
 note = "DEPARTS from this repo's prior eligibility standard: the governing rule (IRS mid-quarter convention, the 40% Q4 threshold, and the percentage tables) is deliberately NOT stated anywhere in environment/data/. Eligibility rests on this being standard, real, IRS-codified professional knowledge (Publication 946, IRC 168(d)(3)) that any corporate tax preparer is expected to know cold -- not on everything being derivable from the provided documents. See README.md for the verification trail on the percentage tables used in the golden solution."

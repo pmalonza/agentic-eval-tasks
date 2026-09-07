@@ -21,6 +21,7 @@ full authoring contract every task in this repo follows.
 | [`debt-covenant-runoff-01`](tasks/debt-covenant-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Build a 24-month term-loan runoff schedule with an interacting covenant rate step-up and cash sweep — getting the month-to-month sequencing right (rate-step-up timing, interest basis, sweep-after-debt-service ordering, payoff cutoff) matters as much as any single formula. |
 | [`loan-daycount-accrual-01`](tasks/loan-daycount-accrual-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Same loan mechanics as `debt-covenant-runoff-01`, but interest accrues on a real-calendar Actual/360 basis (spanning a leap-year February) instead of a flat monthly fraction — the trap is a plausible, named-but-easy-to-substitute wrong day-count convention that collapses to a different task's already-correct answer. |
 | [`tranche-waterfall-runoff-01`](tasks/tranche-waterfall-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | A three-tranche (Senior/Mezzanine/Subordinated) credit facility with a strict payment waterfall, a PIK-vs-cash toggle, and a single covenant trigger producing two effects of deliberately different duration — testing whether compound multi-entity complexity, not just one loan's rules, could push a weaker tier below the ceiling. It didn't. |
+| [`macrs-midquarter-depreciation-01`](tasks/macrs-midquarter-depreciation-01/) | Finance / Corporate Tax | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Tests a domain-knowledge gap instead of a fully-specified rule: the task never states that IRS rules require the MACRS mid-quarter depreciation convention when >40% of a year's basis is placed in service in Q4. All three tiers already knew the rule and the exact percentage tables cold, with no internet access — the flattest (1.0/1.0/1.0) result of any task in this repo. |
 
 ### `fpa-variance-analysis-01` calibration: honest negative result
 
@@ -114,6 +115,41 @@ more rules, more entities) are unlikely to clear the ceiling; the
 what a structurally different class of difficulty — genuine ambiguity,
 an undocumented domain-knowledge gap, or messy unstructured source data —
 would need to look like instead.
+
+### `macrs-midquarter-depreciation-01` calibration: honest negative result, and the flattest one yet
+
+Tested the other class of difficulty flagged above: instead of a
+fully-specified rule set, this task withholds the governing rule
+entirely. Nowhere in the task materials does it say that IRS rules
+require the MACRS mid-quarter depreciation convention (instead of the
+default half-year convention) whenever more than 40% of a year's
+depreciable basis is placed in service in Q4 — the agent has to know or
+derive this real, IRS-codified rule (IRC §168(d)(3), Publication 946) the
+way a real corporate tax preparer would, with **no internet access**
+during calibration to make sure the test measured actual knowledge, not
+lookup ability. Real single-round calibration produced the flattest
+result of any task in this repo: **Haiku 1.0, Sonnet 1.0, Opus 1.0** —
+zero differentiation. All three correctly identified the >40% Q4 trigger
+with no hint, and two of the three (Sonnet, Opus) had the exact published
+percentage tables memorized well enough to reproduce all six years of
+two different quarter-specific tables from memory, unprompted. Full
+writeup, including a genuine (if ungraded) nuance where Haiku's
+unrequested extended calculations revealed shallower table recall than
+the larger models despite an identical score, is in
+[the task's README](tasks/macrs-midquarter-depreciation-01/README.md#calibration-verdict).
+
+**Five independent difficulty mechanisms across two fundamentally
+different eligibility philosophies — fully-specified rule sets of
+increasing size and complexity, and now a withheld, real,
+professionally-standard domain fact — have each been tested for real and
+none has produced a single sub-0.5 score.** The remaining, untested axes
+are a domain fact that is real but *not* heavily represented in public
+training material (hard to source reliably without introducing its own
+fairness or accuracy risk), and tasks requiring a genuine judgment call
+under real ambiguity, where reasonable experts could disagree rather than
+there being one mechanically-or-factually-determined correct answer —
+see `macrs-midquarter-depreciation-01`'s recommendation section for the
+full reasoning.
 
 ## Repo layout
 

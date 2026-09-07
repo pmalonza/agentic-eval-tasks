@@ -21,15 +21,14 @@ All files are under `/home/agent/data/`:
 
 Build a gross-profit variance bridge from budget to actual that ties out
 exactly (budget GP + sum of your bridge components = actual GP, within
-$1). Identify what drove the miss, and produce a corrected view of how
-much of the miss belongs to each product line — check the allocation
-basis used for each cost pool component in `cost_allocation_schedule.csv`
-against what the email thread says the underlying cost actually was, and
-recompute the product-line split on a consistent basis if the stated
-basis and the actual cost description disagree.
+$1). Then produce a product-line attribution of the miss: how much of
+it belongs to Product A vs. Product B, both as currently booked and
+under whatever correction your own review of the source material
+supports, if any.
 
 State which single factor is the largest driver of the total miss, and
-which product line should be the priority for corrective action.
+which product line should be the priority for corrective action based
+on your corrected attribution.
 
 ## Deliverables
 
@@ -38,10 +37,10 @@ Write to `/home/agent/results/`:
 - `report.md` — your analysis. Must include: (1) an executive summary
   stating the headline numbers and your recommendation, (2) the full
   variance bridge with dollar figures for every component, (3) your
-  analysis of the cost allocation schedule and whether it's consistent
-  with the source described in the email thread, (4) a corrected
+  assessment of the Q2 cost allocation schedule, including any
+  concerns about how costs were assigned to each product line, (4) a
   product-line attribution table (budget GM%, as-booked actual GM%,
-  corrected actual GM%, and the point miss under each, for both
+  your attribution's GM%, and the point miss under each, for both
   products), and (5) a recommendation for Q3 reporting.
 - `answer.json` — a JSON object with exactly these keys:
   - `total_gm_miss_points` (float): budget GM% minus actual GM%, in
@@ -56,13 +55,13 @@ Write to `/home/agent/results/`:
     `"overhead"`
   - `one_time_cost_usd` (float): the dollar amount of the one-time cost
     item you identify in the allocation schedule
-  - `one_time_cost_corrected_product_a_usd` (float): that cost,
-    reallocated to Product A on a basis consistent with how the standard
-    overhead pool is allocated
+  - `one_time_cost_corrected_product_a_usd` (float): what you determine
+    Product A's fair share of that cost should be, based on your own
+    review of the source material
   - `one_time_cost_corrected_product_b_usd` (float): same, for Product B
   - `recommended_focus_product` (string): `"Product A"` or `"Product B"`
-    — whichever line should be the priority for corrective action once
-    the allocation is corrected
+    — whichever line should be the priority for corrective action based
+    on your attribution
 
 ## Execution notes
 

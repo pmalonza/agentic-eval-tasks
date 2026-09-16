@@ -154,10 +154,92 @@ withheld-fact task is.
   caveats as the seven predecessor tasks in this repo, for the same
   reasons.
 
-## Calibration status
+## Calibration results (real run, 2026-09-16)
 
-Not yet run as of this writing. This is the eighth task in this repo and
-the first sourced from a published paper rather than being fully
-expert-designed; its actual difficulty against real models is unverified
-until the same three-tier (Haiku/Sonnet/Opus) blind evaluation process is
-run and graded against `tests/`.
+Ran the same real calibration process used for the seven predecessor
+tasks: Haiku, Sonnet, and Opus each solved the task blind, from
+`instruction.md` + the three `environment/data/` files only, explicitly
+instructed to use no internet access (so the test measured whether the
+method could be correctly implemented from the excerpt alone, not
+whether it could be looked up). Opus hit the same "subagents can't write
+a file literally named report.md" guardrail seen in prior rounds,
+correctly reported it, and returned full file content as text instead of
+working around it; it also discovered a stale `answer.json` left in its
+sandbox from an unrelated earlier run and correctly overwrote it with its
+own independently-derived figures rather than trusting the pre-existing
+file.
+
+**All three tiers got `answer.json` numerically exact.** All three
+correctly determined that the manufacturer's warranty is mileage-bound
+(effective expiration month 30, not its nominal 36-month term) while the
+VSC itself is time-bound (month 60, not a mileage-derived month) —
+the two "whichever comes first" tests resolving in opposite directions,
+exactly as the task was designed to require. Sonnet and Opus both
+volunteered, unprompted, a direct numerical contrast against what a
+naive pro-rata approach would show at the same valuation dates,
+confirming they hadn't defaulted to the more familiar convention. Opus
+went further still: an independent closed-form recomputation of every
+valuation checkpoint, a monotonicity/reasonableness check against the
+pro-rata comparison, and a sensitivity analysis showing exactly how the
+answer would have changed had the warranty been (incorrectly) read as
+time-bound.
+
+Programmatic score was 1.0 for all three. Rubric scores, graded by hand
+criterion-by-criterion against `tests/rubric.json` (in lieu of a live LLM
+judge call, per this project's policy against spending shared credentials
+on unauthorized side calls):
+
+| Model | Programmatic | Rubric | Reward (0.30×prog + 0.70×rubric) |
+|---|---|---|---|
+| Haiku | 1.0 | 49/53 = 0.925 | **0.947** |
+| Sonnet | 1.0 | 53/53 = 1.000 | **1.000** |
+| Opus | 1.0 | 53/53 = 1.000 | **1.000** |
+
+Haiku's only gap: it correctly computed and clearly labeled both
+"whichever comes first" resolutions, but never explicitly ran the
+numerical pro-rata contrast that Sonnet and Opus both volunteered
+unprompted — a communication-depth gap, not a correctness gap.
+
+## Calibration verdict
+
+**FAIL (too easy).** No model scored at or below the 0.5 ceiling. Even
+genuinely novel content — a method published after the tested models'
+training data existed, never seen before by any of them, correctly
+excerpted with no ambiguity — was implemented essentially flawlessly by
+all three tiers. This is the most direct test yet of whether raw novelty
+(as opposed to withheld-but-old facts, or complexity, or conflicting
+sources) could be the missing ingredient, and it wasn't.
+
+**Diagnosis.** The result suggests that for these models, correctly
+implementing a plainly-stated, self-contained method from a written
+description is not meaningfully different in difficulty from applying a
+method they already know — the skill being tested (reading precise
+prose, translating it into correct code, handling the one deliberately
+counter-intuitive consequence of the method) is evidently robust to
+whether the method itself is familiar. This is consistent with, not
+contradictory to, this repo's seven prior results: all eight tasks now
+share a deeper commonality than their surface differences suggest —
+each one asks the agent to correctly translate a *fully and precisely
+specified* procedure into a computed answer, and that translation step
+itself is not where these models struggle, regardless of what's on the
+other side of it (a known rule, an unknown rule, a withheld fact, a
+conflict to notice, or a novel formula).
+
+**Recommendation, after eight consecutive negative results across four
+eligibility philosophies.** Fully-specified rule sets, a withheld old
+domain fact, genuine source conflict, and now a genuinely novel
+post-cutoff method have each been tested for real, multiple times,
+against the same three tiers, and none has produced a single sub-0.5
+score. The evidence increasingly points to a conclusion less about any
+one axis and more about the whole *shape* of this task family: any task
+that reduces to "correctly translate a precisely-specified procedure
+into a computed answer" is within reach of current frontier and mid-tier
+models with code execution, no matter where the procedure comes from or
+how novel it is. Clearing the ceiling likely requires abandoning that
+shape entirely — not a harder version of "translate a precise procedure"
+but a task where no amount of correct translation suffices, because the
+procedure itself is not fully specified anywhere (genuinely ambiguous
+prose requiring a judgment call, not resolvable by careful reading), or
+because the hard part is extracting a fact from realistically messy,
+partially-irrelevant source material rather than computing from a fact
+already cleanly stated.

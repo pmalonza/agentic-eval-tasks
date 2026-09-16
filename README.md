@@ -23,6 +23,7 @@ full authoring contract every task in this repo follows.
 | [`tranche-waterfall-runoff-01`](tasks/tranche-waterfall-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | A three-tranche (Senior/Mezzanine/Subordinated) credit facility with a strict payment waterfall, a PIK-vs-cash toggle, and a single covenant trigger producing two effects of deliberately different duration — testing whether compound multi-entity complexity, not just one loan's rules, could push a weaker tier below the ceiling. It didn't. |
 | [`macrs-midquarter-depreciation-01`](tasks/macrs-midquarter-depreciation-01/) | Finance / Corporate Tax | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Tests a domain-knowledge gap instead of a fully-specified rule: the task never states that IRS rules require the MACRS mid-quarter depreciation convention when >40% of a year's basis is placed in service in Q4. All three tiers already knew the rule and the exact percentage tables cold, with no internet access — the flattest (1.0/1.0/1.0) result of any task in this repo. |
 | [`rate-conflict-interest-analysis-01`](tasks/rate-conflict-interest-analysis-01/) | Finance / Treasury | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Tests an epistemic/behavioral failure mode instead of knowledge or rule-following: two equally authoritative source documents genuinely and irreconcilably conflict on a loan's interest margin, with no hint that they disagree. All three tiers spontaneously noticed and flagged the conflict rather than silently picking a side — a second flat 1.0/1.0/1.0 result. |
+| [`kb-earned-contract-liability-01`](tasks/kb-earned-contract-liability-01/) | Finance / Actuarial | Code Generation | ❌ **Fail (too easy)** — see below | First paper-sourced task: implements a real actuarial method published February 2026 (CC BY 4.0, after this session's own training cutoff) that no model could have memorized. Genuinely novel content was implemented essentially flawlessly by all three tiers — the clearest evidence yet that novelty itself isn't the missing difficulty ingredient. |
 
 ### `fpa-variance-analysis-01` calibration: honest negative result
 
@@ -193,6 +194,53 @@ should be assumed to work without testing it for real, given this
 series's seven-for-seven track record. See
 `rate-conflict-interest-analysis-01`'s recommendation section for the
 full reasoning.
+
+### `kb-earned-contract-liability-01` calibration: the eighth failure, and the cleanest test of novelty itself
+
+Every task up to this point reused this repo's original eligibility
+principle — every rule needed to solve the task is stated somewhere in
+the materials, however deeply hidden or complexly interacting. This task
+tests the one remaining variant of that principle worth trying: what if
+the *method itself*, not just a fact about it, genuinely could not have
+been seen during training? Built from a real, single, recently published
+paper — Kerper and Bowron (2026), *Risks* 14(3):44, CC BY 4.0, published
+24 February 2026, after this session's own model knowledge cutoff — per
+SciCode-style paper-sourcing guidelines for Code Generation tasks. The
+task implements two of the paper's genuinely novel ideas (a service
+contract has zero loss exposure while the underlying manufacturer's
+warranty remains in effect, and the warranty's and the contract's own
+"whichever comes first" month-vs-mileage termination tests are
+independent and can resolve in opposite directions) from a plain-language
+excerpt, with no equation the agent could look up.
+
+Real single-round calibration: **Haiku 0.947, Sonnet 1.000, Opus 1.000.**
+All three got every field of `answer.json` numerically exact. Sonnet and
+Opus both volunteered, unprompted, a direct numerical contrast against
+what a naive pro-rata approach would show — confirming they'd correctly
+applied the novel method rather than defaulting to a familiar one — and
+Opus added an independent closed-form recomputation and a sensitivity
+analysis showing exactly how the answer would change under the most
+likely misreading. Full writeup is in
+[the task's README](tasks/kb-earned-contract-liability-01/README.md#calibration-verdict).
+
+**Eight independent difficulty mechanisms across four eligibility
+philosophies — fully-specified rule sets, a withheld old domain fact,
+genuine unresolvable source conflict, and now a genuinely novel
+post-cutoff method — have each been tested for real and none has
+produced a sub-0.5 score.** The pattern that emerges across all eight is
+not really about any one axis; it's that every task in this repo, however
+different its surface mechanism, reduces to the same underlying shape:
+*correctly translate a precisely-specified procedure into a computed
+answer*. That translation step — reading exact prose, whether familiar or
+brand new, and turning it into correct code — is evidently not where
+these models struggle. Clearing the ceiling from here most likely
+requires a task that doesn't reduce to that shape at all: not a harder
+procedure to translate, but one that isn't fully specified anywhere
+(genuine ambiguity requiring judgment, not resolvable by careful
+reading), or one where the hard part is extracting a fact from
+realistically messy source material rather than computing from a fact
+already cleanly given. See `kb-earned-contract-liability-01`'s
+recommendation section for the full reasoning.
 
 ## Repo layout
 

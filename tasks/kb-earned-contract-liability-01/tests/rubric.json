@@ -1,0 +1,118 @@
+{
+  "task": "kb-earned-contract-liability-01",
+  "scale": "binary pass/fail per criterion; weighted sum normalized to [0,1]",
+  "criteria": [
+    {
+      "id": "warranty-mileage-bound-correctly-identified",
+      "category": "numeric_accuracy",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report identifies Month 30 (not Month 36) as the manufacturer's warranty's effective expiration, correctly recognizing that the 30,000-mile limit binds before the 36-month limit at the assumed mileage rate."
+    },
+    {
+      "id": "vsc-time-bound-correctly-identified",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report identifies Month 60 (not a mileage-derived month) as the VSC's own effective expiration, correctly recognizing that the 60-month limit binds before the 75,000-mile limit would be reached."
+    },
+    {
+      "id": "exposed-window-correct",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report identifies Months 31 through 60 (30 exposed months) as the VSC's exposure window, with zero exposure in Months 1-30."
+    },
+    {
+      "id": "total-loss-forecast-correct",
+      "category": "numeric_accuracy",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The report's total loss forecast (a) is $1,500.00 (30 exposed months x $50.00), not $3,000.00 (all 60 months) or any other figure implying a different exposed-month count."
+    },
+    {
+      "id": "valuation-checkpoints-correct",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The Earned/Unearned Contract percentages and dollar liability are correct at all five valuation checkpoints (Months 12, 24, 36, 48, 60), including 0% earned at Months 12 and 24."
+    },
+    {
+      "id": "warranty-exclusion-concept-explained",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly explains, as part of its reasoning, that the VSC has zero exposure while the manufacturer's warranty remains in effect -- not merely that Months 1-30 happen to show 0% earned."
+    },
+    {
+      "id": "independent-whichever-first-tests-explained",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": false,
+      "criterion": "The report explicitly explains that the warranty's and the VSC's own \"whichever comes first\" (month vs. mile) tests are applied independently and resolve in opposite directions here (warranty is mileage-bound, VSC is time-bound), rather than assuming both use the same basis."
+    },
+    {
+      "id": "loss-based-not-pro-rata-explained",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report explicitly contrasts the KB Method's loss-based earning pattern (driven by where forecast loss dollars fall) with a naive pro-rata/age-from-sale approach, noting that a pro-rata approach would show a materially different (non-zero) earned percentage at Month 12."
+    },
+    {
+      "id": "no-fabricated-glm-or-cancellation-detail",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT invent specific GLM coefficients, cancellation rates, or seasonality/trend adjustments not given in the task materials -- the pure premium is given directly and should be used as-is."
+    },
+    {
+      "id": "earned-contract-sums-to-100-validated",
+      "category": "sequencing_correctness",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report demonstrates that the sum of all monthly Earned Contract fractions equals exactly 100% by the VSC's expiration month, as a validation check."
+    },
+    {
+      "id": "executive-summary-headline-outcomes",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The executive summary states, up front, both effective expiration months, the exposed window, and the headline valuation results -- not just a generic restatement of the task."
+    },
+    {
+      "id": "full-schedule-or-equivalent-present",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report shows the month-by-month (or clearly grouped-by-identical-value) loss forecast and Earned Contract schedule, not just the final valuation checkpoints with no supporting detail."
+    },
+    {
+      "id": "no-recipe-restated",
+      "category": "communication",
+      "weight": 1,
+      "negative": true,
+      "criterion": "The report does NOT simply restate the KB Method excerpt or contract terms verbatim in place of showing the actual computed schedule and reasoning."
+    },
+    {
+      "id": "answer-json-schema-complete",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "answer.json includes all required top-level keys and all five valuation_results entries with values of the correct type."
+    },
+    {
+      "id": "cites-the-source-method",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report references the Kerper-Bowron Method (or the Earned Contract formula / exposure-exclusion concept by name) as the basis for the calculation, rather than presenting the numbers with no indication of which method produced them."
+    },
+    {
+      "id": "no-misstated-terms",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT misstate any of the given contract terms (warranty months/miles, VSC months/miles, assumed mileage rate, pure premium, or gross premium) relative to the source materials."
+    }
+  ]
+}

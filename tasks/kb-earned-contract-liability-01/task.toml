@@ -1,0 +1,26 @@
+[task]
+name = "kb-earned-contract-liability-01"
+domain = "finance-fpa"
+task_type = "code-generation"
+version = "1.0.0"
+
+[labels]
+primary = ["FPA-VARIANCE"]
+secondary = ["COG", "DATA", "TSK"]
+
+[scoring]
+programmatic_weight = 0.30
+rubric_weight = 0.70
+programmatic_tolerance_note = "flat $5 absolute tolerance on dollar fields, 0.5pp on percentage fields; exact-match on month/count fields -- see tests/check_programmatic.py; both constructed bugs (no warranty exclusion; month-only warranty cap) score 0.2 and 0.5 respectively"
+
+[source]
+type = "published-paper"
+paper_title = "The Kerper-Bowron Method: A Foundational Change for Service Contract Claim Estimation and Accounting"
+paper_authors = "John Kerper, Lee Bowron"
+paper_venue = "Risks, 14(3), 44"
+paper_doi = "10.3390/risks14030044"
+paper_published_date = "2026-02-24"
+paper_license = "CC BY 4.0"
+
+[eligibility]
+note = "Single-paper Code Generation task. Main paper published 2026-02-24, after this session's own model knowledge cutoff (2026-01) and very likely after the calibration models' cutoffs too -- the method cannot have been memorized from training. Only two of the paper's components are used (the Section 2 Earned Contract formula, and the Section 6.1 warranty-exclusion exposure concept); the paper's own GLM loss-cost modeling and probabilistic lognormal mileage-exposure machinery are deliberately NOT reproduced -- see README.md for why (equation rendering issue during authoring) and how the task was scoped down to a fully deterministic, single-golden-answer adaptation instead."

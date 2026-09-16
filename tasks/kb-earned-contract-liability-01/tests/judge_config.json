@@ -1,0 +1,18 @@
+{
+  "task_context": "Actuarial/FP&A task: compute the Earned Contract schedule and unearned liability for a vehicle service contract using the Kerper-Bowron Method, a real, recently published (Feb 2026) actuarial method not derivable from general prior knowledge. The core thing being graded is whether the agent correctly applied two novel ideas from the cited paper's excerpt: (1) a service contract has zero loss exposure while the manufacturer's warranty is still in effect, and (2) the warranty's and the contract's own 'whichever comes first' (months vs. miles) termination tests are independent and can resolve in opposite directions -- here the warranty is mileage-bound (expires Month 30 despite a nominal 36-month term) while the contract itself is time-bound (expires Month 60 despite a 75,000-mile allowance). The Earned Contract formula itself, once the exposed months are known, is simple arithmetic.",
+  "rubric_path": "tests/rubric.json",
+  "golden_report_path": "solution/report.md",
+  "golden_answer_path": "solution/answer.json",
+  "agent_deliverables": {
+    "report": "report.md",
+    "answer": "answer.json"
+  },
+  "source_files_for_grounding": [
+    "environment/data/kb_method_excerpt.md",
+    "environment/data/contract_terms.md",
+    "environment/data/pricing_model_output.md"
+  ],
+  "trajectory_path": "trajectory.jsonl",
+  "judge_model_env_var": "JUDGE_MODEL",
+  "judge_model_default": "claude-sonnet-5"
+}

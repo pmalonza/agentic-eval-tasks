@@ -114,11 +114,96 @@ escalation) rather than any specific numeric "winner."
   caveats as the five predecessor tasks in this repo, for the same
   reasons.
 
-## Calibration status
+## Calibration results (real run, 2026-09-08)
 
-Not yet run as of this writing. This is the sixth task in this repo and
-the first to test a behavioral/epistemic failure mode (false confidence
-under contradiction) rather than a knowledge or rule-application gap;
-its actual difficulty against real models is unverified until the same
-three-tier (Haiku/Sonnet/Opus) blind evaluation process is run and graded
-against `tests/`.
+Ran the same real calibration process used for the five predecessor
+tasks: Haiku, Sonnet, and Opus each solved the task blind, from
+`instruction.md` + the three `environment/data/` files only, with no hint
+anywhere that the two documents might disagree. Opus hit the same
+"subagents can't write a file literally named report.md" guardrail seen
+in prior rounds, correctly reported it, and returned full file content as
+text instead of working around it.
+
+**All three tiers spontaneously noticed the conflict, with zero hint, and
+correctly computed both scenarios exactly matching golden.** None
+silently picked a side. All three explicitly distinguished the *legal*
+question (does the notice validly amend the Applicable Margin under
+Section 9.02? all three correctly concluded no, since the notice isn't a
+signed bilateral instrument) from the *practical* budgeting question
+(which figure to carry in the interim), and all three recommended
+escalating the discrepancy rather than resolving it themselves. Opus went
+further than the other two: it noted that the Credit Agreement's
+"no amendments" representation is dated as of March 3, 2026, five months
+before the notice, so it deliberately declined to conclude the Credit
+Agreement's rate is definitively correct — a more careful reading than
+Sonnet's or Haiku's, both of which argued more confidently for the
+Credit Agreement's primacy. Opus also surfaced an unprompted, genuinely
+relevant methodological risk (day-count convention: rate/12 vs.
+actual/360, worth roughly $2,900-$3,000 — nearly half the size of the
+margin dispute itself) that this task's own authoring did not anticipate
+or require.
+
+Programmatic score was 1.0 for all three. Rubric scores, graded by hand
+criterion-by-criterion against `tests/rubric.json` (in lieu of a live LLM
+judge call, per this project's policy against spending shared credentials
+on unauthorized side calls):
+
+| Model | Programmatic | Rubric | Reward (0.30×prog + 0.70×rubric) |
+|---|---|---|---|
+| Haiku | 1.0 | 49/49 = 1.000 | **1.000** |
+| Sonnet | 1.0 | 49/49 = 1.000 | **1.000** |
+| Opus | 1.0 | 49/49 = 1.000 | **1.000** |
+
+This is the second task in this repo (after `macrs-midquarter-
+depreciation-01`) with zero tier differentiation — and the most decisive
+result of any task tried, since this mechanism was specifically chosen to
+target a different kind of failure (false confidence under contradiction)
+than the knowledge/rule-application gaps that failed five times before
+it.
+
+## Calibration verdict
+
+**FAIL (too easy).** No model scored at or below the 0.5 ceiling — every
+tier scored a perfect 1.0. The working theory behind this task was that
+"notice an unstated, genuine conflict and flag it rather than silently
+resolve it" is a behavioral/epistemic test, structurally different from
+the rule-following and fact-recall mechanisms that failed five times
+before it, and therefore might trip up at least the weakest tier even
+though it hadn't happened yet. It didn't. Not only did every tier notice
+the conflict, every tier handled the follow-through with genuine
+sophistication — distinguishing legal from practical considerations,
+correctly reasoning about which document could validly govern under the
+Credit Agreement's own amendment clause, and (in Opus's case) surfacing a
+real methodological risk beyond what the task asked for.
+
+**Diagnosis.** This result is informative specifically because it rules
+out a hypothesis that seemed genuinely different in kind from the six
+prior mechanisms: "avoid false confidence when sources conflict" is
+apparently not a gap in current models at any of the three tested tiers
+either. This is plausibly a well-trained, robust behavior (a known
+alignment/RLHF target across labs is reducing sycophancy and
+overconfidence), not something that varies by model scale the way raw
+capability often does — which would explain why it didn't differentiate
+Haiku from Opus the way some of the rule-following tasks at least
+partially did.
+
+**Recommendation, after seven consecutive negative results across three
+fundamentally different eligibility philosophies.** Fully-specified rule
+sets, withheld domain facts, and now genuine source conflict have each
+been tested for real, multiple times, against the same three tiers, and
+none has produced a single sub-0.5 score — with the last two attempts
+landing at a flat, perfect 1.0 across all tiers. At this point the
+evidence is strong enough to say plainly: for financial/quantitative
+analysis tasks with a well-defined deliverable, current frontier and
+mid-tier models (including the cheapest tier tested) do not fail in ways
+this project's mechanisms can produce, whether the difficulty comes from
+rule complexity, withheld facts, or requiring epistemic caution. Further
+tasks in any of these three families are unlikely to be a good use of
+effort. The two genuinely untested categories remain unstructured/messy
+source extraction (where the difficulty is in what the document actually
+says, not in reasoning about known facts) and tasks whose grading itself
+does not rest on one correct answer (judgment calls scored on reasoning
+quality) — both of which require a different kind of task-authoring
+investment than anything tried in this repo so far, and neither of which
+should be assumed to work without testing it for real, given this
+series's track record.

@@ -22,6 +22,7 @@ full authoring contract every task in this repo follows.
 | [`loan-daycount-accrual-01`](tasks/loan-daycount-accrual-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Same loan mechanics as `debt-covenant-runoff-01`, but interest accrues on a real-calendar Actual/360 basis (spanning a leap-year February) instead of a flat monthly fraction — the trap is a plausible, named-but-easy-to-substitute wrong day-count convention that collapses to a different task's already-correct answer. |
 | [`tranche-waterfall-runoff-01`](tasks/tranche-waterfall-runoff-01/) | Finance / Credit Analysis | End-to-End Analysis | ❌ **Fail (too easy)** — see below | A three-tranche (Senior/Mezzanine/Subordinated) credit facility with a strict payment waterfall, a PIK-vs-cash toggle, and a single covenant trigger producing two effects of deliberately different duration — testing whether compound multi-entity complexity, not just one loan's rules, could push a weaker tier below the ceiling. It didn't. |
 | [`macrs-midquarter-depreciation-01`](tasks/macrs-midquarter-depreciation-01/) | Finance / Corporate Tax | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Tests a domain-knowledge gap instead of a fully-specified rule: the task never states that IRS rules require the MACRS mid-quarter depreciation convention when >40% of a year's basis is placed in service in Q4. All three tiers already knew the rule and the exact percentage tables cold, with no internet access — the flattest (1.0/1.0/1.0) result of any task in this repo. |
+| [`rate-conflict-interest-analysis-01`](tasks/rate-conflict-interest-analysis-01/) | Finance / Treasury | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Tests an epistemic/behavioral failure mode instead of knowledge or rule-following: two equally authoritative source documents genuinely and irreconcilably conflict on a loan's interest margin, with no hint that they disagree. All three tiers spontaneously noticed and flagged the conflict rather than silently picking a side — a second flat 1.0/1.0/1.0 result. |
 
 ### `fpa-variance-analysis-01` calibration: honest negative result
 
@@ -149,6 +150,48 @@ fairness or accuracy risk), and tasks requiring a genuine judgment call
 under real ambiguity, where reasonable experts could disagree rather than
 there being one mechanically-or-factually-determined correct answer —
 see `macrs-midquarter-depreciation-01`'s recommendation section for the
+full reasoning.
+
+### `rate-conflict-interest-analysis-01` calibration: honest negative result, a third eligibility philosophy, still flat
+
+Tested a structurally different failure mode than every prior task:
+instead of computing a confident answer correctly (rule-following or
+fact-recall), this task tests whether the agent notices, with **no
+hint anywhere in the materials**, that two equally authoritative source
+documents — an executed Credit Agreement fixing a loan's interest margin
+at 350 bps with an explicit amendment-only change clause, and a later
+lender notice stating 375 bps with no explanation — genuinely and
+irreconcilably conflict, and flags this rather than silently picking a
+side and reporting one confident number. Real single-round calibration
+produced a second flat, perfect result: **Haiku 1.0, Sonnet 1.0, Opus
+1.0.** All three tiers spontaneously noticed the conflict, computed both
+scenarios exactly, correctly reasoned about which document could validly
+govern under the contract's own amendment clause, and recommended
+escalation rather than resolving it themselves — Opus went further,
+identifying a real methodological risk (day-count convention) the task
+itself hadn't required. Full writeup is in
+[the task's README](tasks/rate-conflict-interest-analysis-01/README.md#calibration-verdict).
+
+**Seven independent difficulty mechanisms across three fundamentally
+different eligibility philosophies — fully-specified rule sets, a
+withheld domain fact, and now genuine unresolvable source conflict — have
+each been tested for real, multiple times, against the same three tiers,
+and none has produced a single sub-0.5 score. The last two attempts
+landed at a flat, perfect 1.0 across every tier tested.** At this point
+the evidence supports a plain conclusion: for financial/quantitative
+analysis tasks with a well-defined deliverable, current frontier and
+mid-tier models do not fail in ways this project's mechanisms can
+produce — not through rule complexity, not through withheld facts, and
+not through requiring epistemic caution under contradiction. The two
+genuinely untested categories are unstructured/messy source extraction
+(where the difficulty is in what a document actually says, not in
+reasoning about known facts) and tasks whose grading itself does not rest
+on one correct answer (judgment calls scored on reasoning quality rather
+than a match to a golden answer) — both would require a different kind of
+task-authoring investment than anything tried in this repo, and neither
+should be assumed to work without testing it for real, given this
+series's seven-for-seven track record. See
+`rate-conflict-interest-analysis-01`'s recommendation section for the
 full reasoning.
 
 ## Repo layout

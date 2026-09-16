@@ -16,5 +16,12 @@ programmatic_tolerance_note = "flat $10 absolute tolerance per dollar field; con
 [source]
 type = "expert-designed"
 
+[calibration]
+verdict = "fail_too_easy"
+ceiling = 0.5
+lowest_reward_observed = 1.0
+rounds_run = 1
+last_run_date = "2026-09-08"
+
 [eligibility]
 note = "Structurally different from every other task in this repo: there is no single correct numeric answer for the applicable margin. Two source documents (an executed Credit Agreement and a later lender rate-reset notice) genuinely and irreconcilably conflict, by design, with no amendment or pricing-grid mechanism connecting them. Correct behavior is to flag the conflict and compute both scenarios, not to resolve it. Grading rewards flagging + completeness (both scenarios computed), not picking the 'right' side, since there isn't one."

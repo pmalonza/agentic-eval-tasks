@@ -24,6 +24,7 @@ full authoring contract every task in this repo follows.
 | [`macrs-midquarter-depreciation-01`](tasks/macrs-midquarter-depreciation-01/) | Finance / Corporate Tax | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Tests a domain-knowledge gap instead of a fully-specified rule: the task never states that IRS rules require the MACRS mid-quarter depreciation convention when >40% of a year's basis is placed in service in Q4. All three tiers already knew the rule and the exact percentage tables cold, with no internet access — the flattest (1.0/1.0/1.0) result of any task in this repo. |
 | [`rate-conflict-interest-analysis-01`](tasks/rate-conflict-interest-analysis-01/) | Finance / Treasury | End-to-End Analysis | ❌ **Fail (too easy)** — see below | Tests an epistemic/behavioral failure mode instead of knowledge or rule-following: two equally authoritative source documents genuinely and irreconcilably conflict on a loan's interest margin, with no hint that they disagree. All three tiers spontaneously noticed and flagged the conflict rather than silently picking a side — a second flat 1.0/1.0/1.0 result. |
 | [`kb-earned-contract-liability-01`](tasks/kb-earned-contract-liability-01/) | Finance / Actuarial | Code Generation | ❌ **Fail (too easy)** — see below | First paper-sourced task: implements a real actuarial method published February 2026 (CC BY 4.0, after this session's own training cutoff) that no model could have memorized. Genuinely novel content was implemented essentially flawlessly by all three tiers — the clearest evidence yet that novelty itself isn't the missing difficulty ingredient. |
+| [`gauss-legendre-quadrature-01`](tasks/gauss-legendre-quadrature-01/) | Mathematics / Numerical Analysis | Code Generation (SciCode-style) | Not yet run | First task outside finance and the first in the SciCode sub-problem-decomposition format: build Gauss-Legendre quadrature from scratch (Legendre polynomial evaluation → Newton-method root-finding → quadrature weights) and apply it to the complete elliptic integral of the first kind, cross-validated against an independent arithmetic-geometric-mean reference. Graded by `pytest`, not an LLM judge. |
 
 ### `fpa-variance-analysis-01` calibration: honest negative result
 
@@ -241,6 +242,26 @@ reading), or one where the hard part is extracting a fact from
 realistically messy source material rather than computing from a fact
 already cleanly given. See `kb-earned-contract-liability-01`'s
 recommendation section for the full reasoning.
+
+### `gauss-legendre-quadrature-01`: a new domain and a new format
+
+The eight tasks above are all finance, all graded via a rubric + LLM
+judge. `gauss-legendre-quadrature-01` is the first departure on both
+axes: mathematics/numerical analysis instead of finance, and the
+SciCode-style sub-problem-decomposition format (a `problem.md`
+specification, a golden `solution.py`, and a `pytest` unit test suite
+that grades each sub-problem independently) instead of a rubric graded
+by an LLM judge. Every claim in this domain — a polynomial recurrence, a
+root location, a quadrature weight, a special-function value — has an
+objectively checkable answer, so correctness is determined entirely by
+unit tests; there is no rubric or judge model involved. See
+[the task's README](tasks/gauss-legendre-quadrature-01/README.md) for
+the full verification trail, including a real gap found during authoring
+(an initial-guess bug that silently passed all 107 original tests
+because Newton's method converges to the same answer regardless, given a
+generous iteration budget) and how it was fixed with a tight-iteration-
+budget test that actually catches it. Calibration against real models has
+not yet been run for this task.
 
 ## Repo layout
 

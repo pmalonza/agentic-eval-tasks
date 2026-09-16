@@ -1,0 +1,20 @@
+[task]
+name = "rate-conflict-interest-analysis-01"
+domain = "finance-fpa"
+task_type = "end-to-end-analysis"
+version = "1.0.0"
+
+[labels]
+primary = ["FPA-VARIANCE"]
+secondary = ["COG", "DATA", "TSK"]
+
+[scoring]
+programmatic_weight = 0.30
+rubric_weight = 0.70
+programmatic_tolerance_note = "flat $10 absolute tolerance per dollar field; conflict_detected and both margin fields are exact-match -- see tests/check_programmatic.py; both plausible 'silently picked a side' bugs score exactly 0.5"
+
+[source]
+type = "expert-designed"
+
+[eligibility]
+note = "Structurally different from every other task in this repo: there is no single correct numeric answer for the applicable margin. Two source documents (an executed Credit Agreement and a later lender rate-reset notice) genuinely and irreconcilably conflict, by design, with no amendment or pricing-grid mechanism connecting them. Correct behavior is to flag the conflict and compute both scenarios, not to resolve it. Grading rewards flagging + completeness (both scenarios computed), not picking the 'right' side, since there isn't one."

@@ -1,0 +1,111 @@
+{
+  "task": "rate-conflict-interest-analysis-01",
+  "scale": "binary pass/fail per criterion; weighted sum normalized to [0,1]",
+  "criteria": [
+    {
+      "id": "conflict-explicitly-identified",
+      "category": "numeric_accuracy",
+      "weight": 6,
+      "negative": false,
+      "criterion": "The report explicitly states that the Credit Agreement and the Rate Reset Notice give two different, conflicting Applicable Margin figures (350 bps vs. 375 bps) for the same facility."
+    },
+    {
+      "id": "both-scenarios-computed",
+      "category": "numeric_accuracy",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report computes and presents the full 12-month interest expense projection under BOTH stated rates (not just one), with correct totals of approximately $208,750 (350 bps) and $215,000 (375 bps)."
+    },
+    {
+      "id": "no-single-confident-figure-without-caveat",
+      "category": "sequencing_correctness",
+      "weight": 6,
+      "negative": true,
+      "criterion": "The report does NOT present a single interest expense figure as the definitive or recommended answer without explicitly caveating that a second, equally authoritative source states a different rate."
+    },
+    {
+      "id": "does-not-fabricate-a-resolution",
+      "category": "sequencing_correctness",
+      "weight": 5,
+      "negative": true,
+      "criterion": "The report does NOT invent or assume a reason for the discrepancy that is not supported by the provided materials (e.g. does NOT claim a pricing grid, leverage step-up, or amendment exists when neither document mentions one)."
+    },
+    {
+      "id": "recommends-resolution-not-silent-assumption",
+      "category": "sequencing_correctness",
+      "weight": 4,
+      "negative": false,
+      "criterion": "The report explicitly recommends that the discrepancy be confirmed with the lender and/or legal/credit before either figure is used for budgeting or booking purposes, rather than silently defaulting to one source."
+    },
+    {
+      "id": "does-not-default-to-more-recent-document",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT simply assume the more recently dated document (the Rate Reset Notice) controls merely because it is more recent, without acknowledging that the Credit Agreement's own amendment clause (Section 9.02) means informal correspondence cannot unilaterally change the Applicable Margin."
+    },
+    {
+      "id": "amortization-unaffected-by-conflict-noted",
+      "category": "sequencing_correctness",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report correctly notes or demonstrates that the scheduled principal amortization and the month-12 ending balance are identical under both rate scenarios (the conflict only affects the interest calculation, not the principal schedule)."
+    },
+    {
+      "id": "executive-summary-leads-with-the-conflict",
+      "category": "communication",
+      "weight": 3,
+      "negative": false,
+      "criterion": "The executive summary leads with the fact that a source conflict exists and how it was handled, rather than opening with a computed number as if it were uncontested."
+    },
+    {
+      "id": "full-schedule-table-present",
+      "category": "communication",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report includes a full 12-month schedule table showing interest under both scenarios, not just the two annual totals."
+    },
+    {
+      "id": "no-recipe-restated",
+      "category": "communication",
+      "weight": 1,
+      "negative": true,
+      "criterion": "The report does NOT simply restate the two source documents verbatim in place of showing the actual computed schedule and reasoning."
+    },
+    {
+      "id": "answer-json-schema-complete",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": false,
+      "criterion": "answer.json includes all eight required keys with values of the correct type, including conflict_detected set to true."
+    },
+    {
+      "id": "assumptions-stated-where-ambiguous",
+      "category": "process_grounding",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report explicitly separates what is a stated assumption from `analysis_request.md` (starting balance, flat SOFR rate) from what is unresolved and outside this analysis's ability to determine (which margin is currently correct)."
+    },
+    {
+      "id": "no-misstated-facts",
+      "category": "process_grounding",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT misstate any of the given facts (either document's stated margin, the starting balance, the SOFR assumption, or the amortization amount) relative to the source materials."
+    },
+    {
+      "id": "quantifies-the-discrepancy",
+      "category": "numeric_accuracy",
+      "weight": 2,
+      "negative": false,
+      "criterion": "The report explicitly states the dollar and/or percentage size of the discrepancy between the two scenarios (approximately $6,250, or about 3.0%), not just the two totals separately with no comparison."
+    },
+    {
+      "id": "completes-the-deliverable-despite-conflict",
+      "category": "sequencing_correctness",
+      "weight": 3,
+      "negative": true,
+      "criterion": "The report does NOT refuse to complete the requested 12-month projection, or stop short of producing numbers, on the grounds that the conflict makes the analysis impossible -- flagging the conflict and still delivering both computed scenarios are not mutually exclusive."
+    }
+  ]
+}

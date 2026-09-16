@@ -1,0 +1,10 @@
+{
+  "conflict_detected": true,
+  "scenario_a_margin_bps": 350,
+  "scenario_a_interest_expense_year1_usd": 208750.0,
+  "month_1_interest_scenario_a_usd": 21648.15,
+  "scenario_b_margin_bps": 375,
+  "scenario_b_interest_expense_year1_usd": 215000.0,
+  "month_1_interest_scenario_b_usd": 22296.3,
+  "ending_balance_month_12_usd": 1777777.77
+}

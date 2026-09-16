@@ -1,0 +1,18 @@
+{
+  "task_context": "FP&A/treasury task: compute a 12-month interest expense projection for a term loan. The two source documents deliberately conflict on the applicable interest margin (an executed Credit Agreement states a fixed 3.50% margin with no amendment mechanism triggered; a later lender rate-reset notice states 3.75% with no explanation). There is no legitimate way to resolve which document governs from the provided materials. The core thing being graded is whether the agent noticed and explicitly flagged this conflict, computed the deliverable under both scenarios instead of silently picking one, and recommended escalating the discrepancy for resolution -- not whether it arrived at a single 'correct' rate, since there isn't one.",
+  "rubric_path": "tests/rubric.json",
+  "golden_report_path": "solution/report.md",
+  "golden_answer_path": "solution/answer.json",
+  "agent_deliverables": {
+    "report": "report.md",
+    "answer": "answer.json"
+  },
+  "source_files_for_grounding": [
+    "environment/data/credit_agreement_excerpt.md",
+    "environment/data/lender_rate_reset_notice.md",
+    "environment/data/analysis_request.md"
+  ],
+  "trajectory_path": "trajectory.jsonl",
+  "judge_model_env_var": "JUDGE_MODEL",
+  "judge_model_default": "claude-sonnet-5"
+}
